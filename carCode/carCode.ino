@@ -1,9 +1,20 @@
-void setup() {
-  // put your setup code here, to run once:
+#include <Arduino.h>
+#include "driveMode.h"
 
+#include "standardFunctions.h"
+
+standardFunctions sf;
+driveMode dm;
+
+void setup() {
+  Serial.begin(9600);
+  sf.setupStandardFunctions();
+  //dm.drive();
+  //dm.returnone();
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-
+ Serial.println(sf.pingSensor(0));
+ Serial.print(" ");
+ Serial.print(sf.pingSensor(1));
 }

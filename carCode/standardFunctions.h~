@@ -6,11 +6,10 @@
 #include <Arduino.h>
 
 
-	
+
 class standardFunctions{
 public:
-	int pingSensor(int pingID);
-  void setupStandardFunctions();
+	void pingSensor(int pingID)
 };
 
 #endif
