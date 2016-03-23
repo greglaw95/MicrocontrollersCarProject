@@ -10,6 +10,7 @@
 class standardFunctions{
 public:
 	int pingSensor(int pingID);
+  void setupStandardFunctions();
 };
 
 #endif

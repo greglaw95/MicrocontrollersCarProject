@@ -1,4 +1,7 @@
-//Mode code file
+/**
+ * common functionality code file
+ **/
+#include "standardFunctions.h"
 
 //L=0  R=1
 #define echoPin0 8 
@@ -6,7 +9,12 @@
 #define echoPin1 7 
 #define trigPin1 9
 
-#include "standardFunctions.h"
+void standardFunctions::setupStandardFunctions(){
+  pinMode(trigPin0, OUTPUT);
+  pinMode(echoPin0, INPUT);
+  pinMode(trigPin1, OUTPUT);
+  pinMode(echoPin1, INPUT);
+}
 
 int standardFunctions::pingSensor(int pingID){
 
