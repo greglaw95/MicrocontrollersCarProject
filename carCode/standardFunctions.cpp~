@@ -1,0 +1,8 @@
+//Mode code file
+
+#include standardFunctions.h
+
+void standardFunctions::pingSensor(int pingID){
+
+
+}

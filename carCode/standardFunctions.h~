@@ -6,14 +6,10 @@
 #include <Arduino.h>
 
 
-	
+
 class standardFunctions{
 public:
-	int pingSensor(int pingID);
-  void turnSensor(int degrees);
-  void setupStandardFunctions();
-  void turn(int direction);
-  void drive(int direction);
+	void pingSensor(int pingID)
 };
 
 #endif

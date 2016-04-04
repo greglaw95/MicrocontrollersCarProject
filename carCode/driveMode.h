@@ -1,4 +1,18 @@
 /**
 * Method to make the car drive to the end of the corridor
 */
-void go();
+
+#ifndef driveMode_h
+#define driveMode_h
+
+#include <Arduino.h>
+
+
+class driveMode{
+  public:
+    void drive();
+    int returnone();
+};
+
+
+#endif
