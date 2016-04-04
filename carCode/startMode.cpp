@@ -1,80 +1,72 @@
 /**
  * Code on car startup
+ * checkDir chooses direction to turn
+ * wallScan pings the sensor off the wall
+ * Start moves car + constantly calls these mehtods to keep fairly straight
+ * ^ takes variances in wall distance into account
  */
 
  #include startMode.h
+ #include standardFunctions.h
 
- int lavg;
- int ravg;
+//starting distance as global var
+ int initdist;
 
- bool compareSides(int r1, int r2, int l1, int l2){
-
-  int retval = 1;
+ int checkDir(int currdist){
   
-  //check right side
-  if(r1 >= (r2-10) && r1 <= (r2+10)){
-    ravg = (r1 * sin(45) + r2 * sin(45))/2;
+  int chosendir = 0;
+  int CminI = currdist-initdist;
+  
+  if (CminI>0 && CminI<=30){
+    //turn right
+    chosendir = 1;
+  }     
+  if (CminI<0 && CminI>=-30){
+    //turn left
+    chosendir = -1
   }
-  else{
-    ravg = -1;
+  if (CminI ==0){
+    //go straight
+    chosendir = 0;
   }
-
-  //check left side
-  if(l1 >= (l2-10) && l1 <= (l2+10)){
-    lavg = (l1 * sin(45) + l2 * sin(45))/2;
+  else if (CminI<-30 || CminI>30){
+    //change to new distance
+    initdist=currdist;
+    chosendir=0;
   }
-  else{
-    lavg = -1;
-  }
-
-  //check averages
-  if(lavg==-1 && ravg==-1)
-    retval=1;
-  if(lavg==-1 && ravg!=-1)
-    retval=2; //use ravg
-  if(lavg!=-1 && ravg==-1)
-    retval=3; //use lavg
-  if(lavg!=-1 && ravg!=-1){
-    if (lavg>ravg)
-      retval = 2;
-    else
-      retval = 3;
-  }
-  return retval;
+  
+  return chosendir;
  }
 
  int wallScan(){
-  //int r1 = 045 scan;
-  //int r2 = 135 scan;
-  //int l1 = 315 scan;
-  //int l2 = 225 scan;
 
-  return compareSides(r1, r2, l1, l2);
+  //pingval = ping the sensor and return the value
+  int pingval = pingSensor(1);
+
+  return pingval;
+  
  }
 
+ 
  void start(){
-  
-  int side = wallScan();
 
-  //turn the sensor to the appropriate side
-  switch(side){
-    case 1:
-      // restart
-      printf("no good reading\n");
-    case 2:
-      //sensor to 090
-      printf("wall is on the right\n");
-    case 3:
-      //sensor to 270
-      printf("Wall is on the left\n");
-    case else:
-      //restart
-      printf("fatal error\n");   
-  }
+  //look ping sensor to right
+  turnSensor(090);
+
+  //check the initial distance before moving
+  int initdist = wallScan();
   
   //start the car moving for this section
-  
+  drive(1);
+  //set as for loop and loop for a long time until distance reached
 
-  
+  for (int i=0;i<1000000;i++){
+    turn(0);
+    distance = wallScan();
+    int direction = checkDir(distance);
+    turn(direction);
+  }
+
+  drive(0);
  }
 

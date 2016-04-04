@@ -8,7 +8,7 @@
 
 class startMode{
   private:
-    int compareSides(int r1, int r2, int l1, int l2);
+    int checkDir(int pingval);
     int wallScan();
   public:
     void start();
