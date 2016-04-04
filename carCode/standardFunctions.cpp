@@ -9,6 +9,14 @@
 #define echoPin1 7 
 #define trigPin1 9
 
+/*Servo defines*/
+#define FIFTEEN 70
+#define NINETY 350
+#define ONEEIGHTY 665
+#define THREESIXTY 1330
+#define FULLLEFT 1700
+#define FULLRIGHT 1300
+
 void standardFunctions::setupStandardFunctions(){
   pinMode(trigPin0, OUTPUT);
   pinMode(echoPin0, INPUT);
@@ -59,4 +67,31 @@ int standardFunctions::pingSensor(int pingID){
 }
 return distance;
 
+}
+
+
+void standardFunctions::turnSensor(int degrees){
+  int pulse;
+  int timeDelay;
+  if(degrees>0){
+    pulse = FULLLEFT;
+  } else {
+    pulse = FULLRIGHT;
+  }
+  if(abs(degrees)==15){
+    timeDelay = FIFTEEN;
+  } else if (abs(degrees)==90){
+    timeDelay = NINETY;
+  } else if(abs(degrees)==180){
+    timeDelay = ONEEIGHTY;
+  }else if (abs(degrees)==360){
+    timeDelay = THREESIXTY;
+  } else {
+    return;
+  }
+  
+  myServo.writeMicroseconds(pulse);
+  delay(timeDelay);
+  myServo.writeMicroseconds(1500);
+  //delay(20);
 }

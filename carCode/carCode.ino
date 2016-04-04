@@ -14,6 +14,7 @@ void setup() {
 }
 
 void loop() {
+  sf.turnSensor(25);
  Serial.println(sf.pingSensor(0));
  Serial.print(" ");
  Serial.print(sf.pingSensor(1));
