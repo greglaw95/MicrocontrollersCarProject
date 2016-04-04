@@ -12,6 +12,8 @@ public:
 	int pingSensor(int pingID);
   void turnSensor(int degrees);
   void setupStandardFunctions();
+  void turn(int direction);
+  void drive(int direction);
 };
 
 #endif
