@@ -11,23 +11,25 @@
 
 //starting distance as global var
  int initdist;
+ 
 
  int checkDir(int currdist){
   
   int chosendir = 0;
   int CminI = currdist-initdist;
-  
-  if (CminI>0 && CminI<=30){
+
+
+  if (CminI >= -3 && CminI <= 3){
+    //go straight
+    chosendir = 0;
+  }
+  if (CminI>3 && CminI<=30){
     //turn right
     chosendir = 1;
   }     
-  if (CminI<0 && CminI>=-30){
+  if (CminI<-3 && CminI>=-30){
     //turn left
     chosendir = -1;
-  }
-  if (CminI ==0){
-    //go straight
-    chosendir = 0;
   }
   else if (CminI<-30 || CminI>30){
     //change to new distance
@@ -44,7 +46,6 @@
   int pingval = sf.pingSensor(1);
 
   return pingval;
-  
  }
 
  
