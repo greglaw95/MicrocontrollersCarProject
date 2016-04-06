@@ -4,14 +4,15 @@
 #define startMode_h
 
 #include <Arduino.h>
+#include "standardFunctions.h"
 
 
 class startMode{
   private:
     int checkDir(int pingval);
-    int wallScan();
+    int wallScan(standardFunctions sf);
   public:
-    void start();
-}
+    void start(standardFunctions sf);
+};
 
 #endif

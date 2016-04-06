@@ -6,8 +6,8 @@
  * ^ takes variances in wall distance into account
  */
 
- #include startMode.h
- #include standardFunctions.h
+ #include "startMode.h"
+ #include "standardFunctions.h"
 
 //starting distance as global var
  int initdist;
@@ -23,7 +23,7 @@
   }     
   if (CminI<0 && CminI>=-30){
     //turn left
-    chosendir = -1
+    chosendir = -1;
   }
   if (CminI ==0){
     //go straight
@@ -38,35 +38,38 @@
   return chosendir;
  }
 
- int wallScan(){
+ int wallScan(standardFunctions sf){
 
   //pingval = ping the sensor and return the value
-  int pingval = pingSensor(1);
+  int pingval = sf.pingSensor(1);
 
   return pingval;
   
  }
 
  
- void start(){
+ void start(standardFunctions sf){
+
+  int distance;
+  int direct;
 
   //look ping sensor to right
-  turnSensor(090);
+  sf.turnSensor(90);
 
   //check the initial distance before moving
-  int initdist = wallScan();
+  int initdist = wallScan(sf);
   
   //start the car moving for this section
-  drive(1);
+  sf.drive(1);
   //set as for loop and loop for a long time until distance reached
 
   for (int i=0;i<1000000;i++){
-    turn(0);
-    distance = wallScan();
-    int direction = checkDir(distance);
-    turn(direction);
+    sf.turn(0);
+    distance = wallScan(sf);
+    direct = checkDir(distance);
+    sf.turn(direct);
   }
 
-  drive(0);
+  sf.drive(0);
  }
 
