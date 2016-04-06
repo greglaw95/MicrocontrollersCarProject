@@ -2,6 +2,7 @@
  * common functionality code file
  **/
 #include "standardFunctions.h"
+#include <Servo.h>
 
 //L=0  R=1
 #define echoPin0 8 
@@ -17,11 +18,17 @@
 #define FULLLEFT 1700
 #define FULLRIGHT 1300
 
+#define SERVOPIN 9
+
+
+Servo myServo;
+
 void standardFunctions::setupStandardFunctions(){
   pinMode(trigPin0, OUTPUT);
   pinMode(echoPin0, INPUT);
   pinMode(trigPin1, OUTPUT);
   pinMode(echoPin1, INPUT);
+  myServo.attach(SERVOPIN);
 }
 
 int standardFunctions::pingSensor(int pingID){
