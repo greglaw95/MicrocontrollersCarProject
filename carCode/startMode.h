@@ -9,7 +9,7 @@
 
 class startMode{
   private:
-    int checkDir(int pingval);
+    int checkDir(int currDist);
     int wallScan(standardFunctions sf);
   public:
     void start(standardFunctions sf);

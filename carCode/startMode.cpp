@@ -1,9 +1,13 @@
 /**
  * Code on car startup
- * checkDir chooses direction to turn
+ * checkDir chooses direction to turn:
+ *    -3<=dist>=3 : straight
+ *    -30<=dist<-3 : left
+ *    3<dist<=30 : right
+ *    beyond these, go straight and reassign init distance
  * wallScan pings the sensor off the wall
- * Start moves car + constantly calls these mehtods to keep fairly straight
- * ^ takes variances in wall distance into account
+ * Start moves car + constantly calls these methods to keep fairly straight
+ *    takes variances in wall distance into account through the reassignment in checkDir
  */
 
  #include "startMode.h"
@@ -43,7 +47,7 @@
  int wallScan(standardFunctions sf){
 
   //pingval = ping the sensor and return the value
-  int pingval = sf.pingSensor(1);
+  int pingval = sf.pingSensor(0);
 
   return pingval;
  }
