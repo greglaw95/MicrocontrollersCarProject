@@ -3,19 +3,19 @@
 
 #include "standardFunctions.h"
 
-standardFunctions sf;
+static standardFunctions sf;
 driveMode dm;
 
 void setup() {
   Serial.begin(9600);
-  sf.setupStandardFunctions();
+  //sf.setupStandardFunctions();
   //dm.drive();
   //dm.returnone();
 }
 
 void loop() {
-  sf.turnSensor(25);
- Serial.println(sf.pingSensor(0));
- Serial.print(" ");
- Serial.print(sf.pingSensor(1));
+ // sf.turnSensor(25);
+ //Serial.println(sf.pingSensor(0));
+ //Serial.print(" ");
+ //Serial.print(sf.pingSensor(1));
 }

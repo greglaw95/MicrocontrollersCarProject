@@ -23,7 +23,7 @@
 
 Servo myServo;
 
-void standardFunctions::setupStandardFunctions(){
+extern "C" void standardFunctions::setupStandardFunctions(){
   pinMode(trigPin0, OUTPUT);
   pinMode(echoPin0, INPUT);
   pinMode(trigPin1, OUTPUT);
