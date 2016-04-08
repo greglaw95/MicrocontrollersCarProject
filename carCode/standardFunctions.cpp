@@ -5,6 +5,8 @@
 #include <Servo.h>
 Servo myServo;
 
+#define vref 11
+
 /*MOTORS*/
 #define forward 1
 #define backward 2
@@ -36,6 +38,8 @@ void standardFunctions::setupStandardFunctions(){
   pinMode(backward, OUTPUT);
   pinMode(right, OUTPUT);
   pinMode(left, OUTPUT);
+  pinMode(vref,OUTPUT);
+  digitalWrite(vref,HIGH);
 
   myServo.attach(servoPin);
 }
@@ -132,6 +136,7 @@ void standardFunctions::turn(int direct){
   digitalWrite(right, LOW);
   digitalWrite(left, LOW);
   if(direct){
+    //twitch left after right turn to get centre again
     digitalWrite(right, HIGH);
   }else if(direct==-1){
     digitalWrite(left, HIGH);
