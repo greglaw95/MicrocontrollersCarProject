@@ -4,6 +4,17 @@
 #include "standardFunctions.h"
 #include <Servo.h>
 
+Servo myServo;
+
+#define vref 11
+
+/*MOTORS*/
+#define forward 1
+#define backward 2
+#define right 3
+#define left 4
+
+/*PING SENSOR*/
 //L=0  R=1
 #define echoPin0 8 
 #define trigPin0 10
@@ -17,10 +28,10 @@
 #define THREESIXTY 1330
 #define FULLLEFT 1700
 #define FULLRIGHT 1300
+#define servoPin 9
 
 #define SERVOPIN 9
 
-Servo myServo;
 
 void standardFunctions::setupStandardFunctions(){
   pinMode(trigPin0, OUTPUT);
@@ -28,6 +39,14 @@ void standardFunctions::setupStandardFunctions(){
   pinMode(trigPin1, OUTPUT);
   pinMode(echoPin1, INPUT);
   myServo.attach(SERVOPIN);
+  pinMode(forward, OUTPUT);
+  pinMode(backward, OUTPUT);
+  pinMode(right, OUTPUT);
+  pinMode(left, OUTPUT);
+  pinMode(vref,OUTPUT);
+  digitalWrite(vref,HIGH);
+
+  myServo.attach(servoPin);
 }
 
 int standardFunctions::pingSensor(int pingID){
@@ -95,9 +114,36 @@ void standardFunctions::turnSensor(int degrees){
   } else {
     return;
   }
-  
   myServo.writeMicroseconds(pulse);
   delay(timeDelay);
   myServo.writeMicroseconds(1500);
   //delay(20);
+}
+
+void standardFunctions::drive(int direct){
+  //-1 for backwards
+  //0 for nuffin
+  //1 for forwards
+  digitalWrite(backward, LOW);
+  digitalWrite(forward, LOW);
+  if(direct){
+    digitalWrite(forward, HIGH);
+  }else if(direct==-1){
+    digitalWrite(backward, HIGH);
+  }
+  int direction=1;
+}
+
+void standardFunctions::turn(int direct){
+  //-1 for left
+  //0 for straight
+  //1 for right
+  digitalWrite(right, LOW);
+  digitalWrite(left, LOW);
+  if(direct){
+    //twitch left after right turn to get centre again
+    digitalWrite(right, HIGH);
+  }else if(direct==-1){
+    digitalWrite(left, HIGH);
+  }
 }
