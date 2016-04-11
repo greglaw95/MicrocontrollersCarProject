@@ -23,11 +23,11 @@
   int CminI = currdist-initdist;
 
 
-  if (CminI >= -3 && CminI <= 3){
+  if (CminI >= -3 && CminI <= 2){
     //go straight
     chosendir = 0;
   }
-  if (CminI>3 && CminI<=30){
+  if (CminI>2 && CminI<=30){
     //turn right
     chosendir = 1;
   }     
