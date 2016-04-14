@@ -68,7 +68,7 @@
   sf.drive(1);
   //set as for loop and loop for a long time until distance reached
 
-  for (int i=0;i<1000;i++){
+  for (int i=0;i<500;i++){
     sf.turn(0);
     distance = wallScan(sf);
     direct = checkDir(distance);
