@@ -23,6 +23,10 @@
   int CminI = currdist-initdist;
 
 
+  if (CminI == -initdist){
+    //go straight
+    chosendir=0;
+  }
   if (CminI >= -3 && CminI <= 2){
     //go straight
     chosendir = 0;
@@ -63,6 +67,14 @@
 
   //check the initial distance before moving
   int initdist = wallScan(sf);
+
+  //make sure that the init dist is actually set
+  while(initdist ==0){
+    sf.drive(1);
+    delay(5);
+    sf.drive(0);
+    initdist = wallScan(sf);
+  }
   
   //start the car moving for this section
   sf.drive(1);
