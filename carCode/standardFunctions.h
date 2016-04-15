@@ -10,6 +10,7 @@
 class standardFunctions{
 public:
 	int pingSensor(int pingID);
+  void turnServo(int degrees);
   void turnSensor(int degrees);
   void setupStandardFunctions();
   void turn(int direction);

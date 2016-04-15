@@ -22,15 +22,19 @@ Servo myServo;
 #define trigPin1 8
 
 /*Servo defines*/
-#define FIFTEEN 70
-#define NINETY 350
-#define ONEEIGHTY 665
-#define THREESIXTY 1330
+#define AFIFTEEN 78
+#define CFIFTEEN 89
+#define ANINETY 430
+#define CNINETY 455
+#define AONEEIGHTY 792
+#define CONEEIGHTY 820
+#define ATHREESIXTY 1535
+#define CTHREESIXTY 1575
 #define FULLLEFT 1700
 #define FULLRIGHT 1300
-#define servoPin 3
+#define servoPin 9
 
-#define SERVOPIN 3
+#define SERVOPIN 9
 
 
 void standardFunctions::setupStandardFunctions(){
@@ -95,22 +99,37 @@ return distance;
 }
 
 
+void standardFunctions::turnServo(int degrees){
+  
+  
+}
+
+
 void standardFunctions::turnSensor(int degrees){
   int pulse;
   int timeDelay;
-  if(degrees>0){
+  if(degrees<0){
     pulse = FULLLEFT;
   } else {
     pulse = FULLRIGHT;
   }
-  if(abs(degrees)==15){
-    timeDelay = FIFTEEN;
-  } else if (abs(degrees)==90){
-    timeDelay = NINETY;
-  } else if(abs(degrees)==180){
-    timeDelay = ONEEIGHTY;
-  }else if (abs(degrees)==360){
-    timeDelay = THREESIXTY;
+
+  if(degrees==-15){
+    timeDelay = AFIFTEEN;
+  } else if (degrees==-90){
+    timeDelay = ANINETY;
+  } else if(degrees==-180){
+    timeDelay = AONEEIGHTY;
+  } else if (degrees==-360){
+    timeDelay = ATHREESIXTY;
+  } else if(abs(degrees)==15){
+    timeDelay = CFIFTEEN;
+  } else if (degrees==90){
+    timeDelay = CNINETY;
+  } else if(degrees==180){
+    timeDelay = CONEEIGHTY;
+  }else if (degrees==360){
+    timeDelay = CTHREESIXTY;
   } else {
     return;
   }

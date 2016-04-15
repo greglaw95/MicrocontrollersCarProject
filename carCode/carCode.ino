@@ -12,20 +12,21 @@ void setup() {
   sf.drive(0);
   sf.turn(0);
   //sf.turnSensor(360);
-  /*
-  delay(1500);
-  sf.turn(1);
-  delay(1500);
-  sf.turn(0);
+    sf.turnSensor(360);
+    delay(900);
+    sf.turnSensor(-360);
+
+/*
+ for(int i=0; i<6; i++){
+    sf.turnSensor(15);
+    delay(400);
+  }
   
-  sf.drive(1);
-  delay(1500);
-  sf.drive(0);
-  delay(350);
-  sf.drive(-1);
-  delay(1500);
-  sf.drive(0);
-  */
+  for(int i=0; i<6; i++){
+    sf.turnSensor(-15);
+    delay(400);
+  }*/
+  
 }
 
 void loop() {
