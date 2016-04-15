@@ -30,7 +30,7 @@ void setup() {
   sf.turn(0);
   delay(100);
   sf.drive(0);
-  
+  dm.drive();
 }
 
 void loop() {
