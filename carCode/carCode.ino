@@ -1,12 +1,31 @@
 #include <Arduino.h>
 #include "driveMode.h"
-
+#include "startMode.h"
 #include "standardFunctions.h"
 
 standardFunctions sf;
-driveMode dm;
+//driveMode dm;
+startMode sm;
+  
+
 
 void setup() {
+
+  sf.setupStandardFunctions();
+  //sf.turnSensor(-90);
+  //sm.start();
+  //sf.turn(1);
+
+  sf.turnServo(0);
+  delay(3000);
+  sf.turnServo(90);
+  delay(3000);
+  sf.turnServo(180);
+  delay(3000);
+  sf.turnServo(90);
+
+//sf.turnSensor(-15);
+  /*
   Serial.begin(9600);
   sf.setupStandardFunctions();
   sf.drive(0);
@@ -30,5 +49,6 @@ void setup() {
 }
 
 void loop() {
-  Serial.print(sf.pingSensor(0));
+  //Serial.print(sf.pingSensor(0));
+  
 }

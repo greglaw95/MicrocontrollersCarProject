@@ -6,7 +6,6 @@
 
 Servo myServo;
 
-#define vref 11
 
 /*MOTORS*/
 #define forward 11
@@ -47,8 +46,6 @@ void standardFunctions::setupStandardFunctions(){
   pinMode(backward, OUTPUT);
   pinMode(right, OUTPUT);
   pinMode(left, OUTPUT);
-  pinMode(vref,OUTPUT);
-  digitalWrite(vref,HIGH);
 
   myServo.attach(servoPin);
 }
@@ -65,7 +62,7 @@ int standardFunctions::pingSensor(int pingID){
  
  digitalWrite(trigPin0, LOW); 
  
- duration = pulseIn(echoPin0, HIGH); //wait until sound reflects back
+ duration = pulseIn(echoPin0, HIGH, 10); //wait until sound reflects back with timeout
  
  Serial.print("Time0  ");
  Serial.print(duration);
@@ -84,7 +81,7 @@ int standardFunctions::pingSensor(int pingID){
   delayMicroseconds(10); 
  
   digitalWrite(trigPin1, LOW);
-  duration = pulseIn(echoPin1, HIGH);
+  duration = pulseIn(echoPin1, HIGH, 10); //added timeout
   
   Serial.print("Time1  ");
   Serial.print(duration);
@@ -100,11 +97,17 @@ return distance;
 
 
 void standardFunctions::turnServo(int degrees){
+  if(degrees>180)
+    degrees=180;
+  if(degrees<0)
+    degrees-0;
   
+  myServo.write(degrees);
   
 }
 
-
+//DO NOT CALL
+/*
 void standardFunctions::turnSensor(int degrees){
   int pulse;
   int timeDelay;
@@ -138,6 +141,7 @@ void standardFunctions::turnSensor(int degrees){
   myServo.writeMicroseconds(1500);
   //delay(20);
 }
+*/
 
 void standardFunctions::drive(int direct){
   //-1 for backwards
