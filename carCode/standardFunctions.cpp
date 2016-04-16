@@ -8,19 +8,22 @@ Servo myServo;
 
 
 /*MOTORS*/
-#define forward 11
-#define backward 12
-#define right 3
-#define left 2
+#define FORWARD 11
+#define BACKWARD 12
+#define LEFT 2
+#define RIGHT 3
+
 
 /*PING SENSOR*/
 //L=0  R=1
-#define echoPin0 6 
-#define trigPin0 5 
-#define echoPin1 10 
-#define trigPin1 8
+#define TRIGPIN0 6 
+#define ECHOPIN0 7 
+#define TRIGPIN1 8
+#define ECHOPIN1 9 
+#define READINGS 5
 
-/*Servo defines*/
+/*
+Code for old servo approach
 #define AFIFTEEN 78
 #define CFIFTEEN 89
 #define ANINETY 430
@@ -29,40 +32,44 @@ Servo myServo;
 #define CONEEIGHTY 820
 #define ATHREESIXTY 1535
 #define CTHREESIXTY 1575
+*/
+
+/*Servo defines*/
 #define FULLLEFT 1700
 #define FULLRIGHT 1300
-#define servoPin 9
 
-#define SERVOPIN 9
+#define SERVOPIN 10
 
 
 void standardFunctions::setupStandardFunctions(){
-  pinMode(trigPin0, OUTPUT);
-  pinMode(echoPin0, INPUT);
-  pinMode(trigPin1, OUTPUT);
-  pinMode(echoPin1, INPUT);
+  pinMode(TRIGPIN0, OUTPUT);
+  pinMode(ECHOPIN0, INPUT);
+  pinMode(TRIGPIN1, OUTPUT);
+  pinMode(ECHOPIN1, INPUT);
   myServo.attach(SERVOPIN);
-  pinMode(forward, OUTPUT);
-  pinMode(backward, OUTPUT);
-  pinMode(right, OUTPUT);
-  pinMode(left, OUTPUT);
+  pinMode(FORWARD, OUTPUT);
+  pinMode(BACKWARD, OUTPUT);
+  pinMode(RIGHT, OUTPUT);
+  pinMode(LEFT, OUTPUT);
 
-  myServo.attach(servoPin);
+  myServo.attach(SERVOPIN);
 }
 
-int standardFunctions::pingSensor(int pingID){
+
+
+int soloPingSensor(int pingID){
 
  long duration, distance;
  if(pingID==0){
- digitalWrite(trigPin0, LOW); //make sure trigger pin is low
+ digitalWrite(TRIGPIN0, LOW); //make sure trigger pin is low
  delayMicroseconds(2); 
 
- digitalWrite(trigPin0, HIGH); //trigger sound
+ digitalWrite(TRIGPIN0, HIGH); //trigger sound
  delayMicroseconds(10); 
  
- digitalWrite(trigPin0, LOW); 
+ digitalWrite(TRIGPIN0, LOW); 
  
- duration = pulseIn(echoPin0, HIGH, 10); //wait until sound reflects back with timeout
+ duration = pulseIn(ECHOPIN0, HIGH, 10); //wait until sound reflects back with timeout
  
  Serial.print("Time0  ");
  Serial.print(duration);
@@ -74,14 +81,14 @@ int standardFunctions::pingSensor(int pingID){
  
 }else if(pingID==1){
   
-  digitalWrite(trigPin1, LOW); 
+  digitalWrite(TRIGPIN1, LOW); 
   delayMicroseconds(2); 
 
-  digitalWrite(trigPin1, HIGH);
+  digitalWrite(TRIGPIN1, HIGH);
   delayMicroseconds(10); 
  
-  digitalWrite(trigPin1, LOW);
-  duration = pulseIn(echoPin1, HIGH, 10); //added timeout
+  digitalWrite(TRIGPIN1, LOW);
+  duration = pulseIn(ECHOPIN1, HIGH, 10); //added timeout
   
   Serial.print("Time1  ");
   Serial.print(duration);
@@ -104,6 +111,18 @@ void standardFunctions::turnServo(int degrees){
   
   myServo.write(degrees);
   
+}
+
+int standardFunctions::pingSensor(int pingID){
+  int currentResult;
+  int totalResult=0;
+  for(int i=0;i<READINGS;i++){
+    do{
+      currentResult=soloPingSensor(pingID);
+    } while(currentResult==0);
+    totalResult=totalResult+currentResult;
+  }
+  return totalResult/READINGS;
 }
 
 //DO NOT CALL
@@ -147,12 +166,12 @@ void standardFunctions::drive(int direct){
   //-1 for backwards
   //0 for nuffin
   //1 for forwards
-  digitalWrite(backward, LOW);
-  digitalWrite(forward, LOW);
+  digitalWrite(BACKWARD, LOW);
+  digitalWrite(FORWARD, LOW);
   if(1==direct){
-    digitalWrite(forward, HIGH);
+    digitalWrite(FORWARD, HIGH);
   }else if(direct==-1){
-    digitalWrite(backward, HIGH);
+    digitalWrite(BACKWARD, HIGH);
   }
 }
 
@@ -160,12 +179,12 @@ void standardFunctions::turn(int direct){
   //-1 for left
   //0 for straight
   //1 for right
-  digitalWrite(right, LOW);
-  digitalWrite(left, LOW);
+  digitalWrite(RIGHT, LOW);
+  digitalWrite(LEFT, LOW);
   if(1==direct){
     //twitch left after right turn to get centre again
-    digitalWrite(right, HIGH);
+    digitalWrite(RIGHT, HIGH);
   }else if(direct==-1){
-    digitalWrite(left, HIGH);
+    digitalWrite(LEFT, HIGH);
   }
 }
