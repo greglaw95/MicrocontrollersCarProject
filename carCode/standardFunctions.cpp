@@ -2,9 +2,9 @@
  * common functionality code file
  **/
 #include "standardFunctions.h"
-#include <Servo.h>
+//#include <Servo.h>
 
-Servo myServo;
+//Servo myServo;
 
 
 /*MOTORS*/
@@ -46,13 +46,12 @@ void standardFunctions::setupStandardFunctions(){
   pinMode(ECHOPIN0, INPUT);
   pinMode(TRIGPIN1, OUTPUT);
   pinMode(ECHOPIN1, INPUT);
-  myServo.attach(SERVOPIN);
+  //myServo.attach(SERVOPIN);
   pinMode(FORWARD, OUTPUT);
   pinMode(BACKWARD, OUTPUT);
   pinMode(RIGHT, OUTPUT);
   pinMode(LEFT, OUTPUT);
 
-  myServo.attach(SERVOPIN);
 }
 
 
@@ -109,21 +108,69 @@ void standardFunctions::turnServo(int degrees){
   if(degrees<0)
     degrees-0;
   
-  myServo.write(degrees);
+  //myServo.write(degrees);
   
 }
 
 int standardFunctions::pingSensor(int pingID){
+  int pingValues[5];
+  int similarValues[5];
   int currentResult;
   int totalResult=0;
+  int largest=0;
+  int largestIndex=0;
   for(int i=0;i<READINGS;i++){
     do{
       currentResult=soloPingSensor(pingID);
     } while(currentResult==0);
-    totalResult=totalResult+currentResult;
+    pingValues[i]=currentResult;
+    //totalResult=totalResult+currentResult;
   }
-  return totalResult/READINGS;
+
+  for(int i=0;i<READINGS;i++){
+    similarValues[i] = getCountOfSimilarNumbers(pingValues,i); 
+  }
+    //finds one of the numbers that have the highest count of similar numbers
+    for (int i = 0; i < READINGS; i++)
+    {
+        if (largest < similars[i]){
+            largest = similars[i];
+            largestIndex=i;
+        }
+    }
+  //return totalResult/READINGS;
+  return pingValues[largestIndex];
 }
+
+
+int getCountOfSimilarNumbers(int pingValues[],int index){
+  /*returns the count of similar values in the array
+  to the ping value at index*/
+  int i;
+  int counter=0;
+  for(i=0;i<READINGS;i++){
+     int diff = abs(pingValues[i] - pingValues[index]);
+     if(diff<10 && diff>=0){
+       //similar number
+       counter++;
+   }
+  }
+  return counter;
+} /*
+  int i;
+  int counter;
+  for(i=0;i<READINGS;i++){
+     int diff = pingValues[i] - pingValues[number];
+     if(diff<10 || diff < -10){
+       //similar number
+       counter++;
+     } 
+  }
+ similars[number]=counter;
+ getCountOfSimilarNumbers(pingValues, number++, similars);
+ 
+ return similars;
+}*/
 
 //DO NOT CALL
 /*
