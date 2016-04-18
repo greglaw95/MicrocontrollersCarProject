@@ -128,9 +128,14 @@ int getCountOfSimilarNumbers(int pingValues[],int index){
 }
 
 int standardFunctions::pingSensor(int pingID){
-  
-  int pingValues[5];
-  int similarValues[5];
+  int currentReading;
+  do{
+    currentReading=soloPingSensor(pingID);
+  }while(currentReading==0);
+  return currentReading;
+  /*
+  int pingValues[READINGS];
+  int similarValues[READINGS];
   int currentResult;
   int totalResult=0;
   int largest=0;
@@ -156,6 +161,7 @@ int standardFunctions::pingSensor(int pingID){
     }
   //return totalResult/READINGS;
   return pingValues[largestIndex];
+  */
 }
 
 
