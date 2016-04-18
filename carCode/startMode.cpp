@@ -26,24 +26,20 @@
 
   if (CminI == -initdist){
     //go straight
-    chosendir=0;
-  } 
-  if (CminI >= -5 && CminI <= 4){
+    chosendir = 0;
+  } else if (CminI >= -5 && CminI <= 4){
     //go straight
     chosendir = 0;
-  }
-  if (CminI>4 && CminI<=30){
+  } else if (CminI>4 && CminI<=30){
     //turn right
     chosendir = 1;
-  }
-  if (CminI<-5 && CminI>=-30){
+  } else if (CminI<-5 && CminI>=-30){
     //turn left
     chosendir = -1;
-  }
-  if (CminI<-30 || CminI>30){
+  } else if (CminI<-30 || CminI>30){
     //change to new distance
     initdist=currdist;
-    chosendir=0;
+    chosendir = 0;
   }
   
   return chosendir;
@@ -66,16 +62,14 @@
   sf.turnServo(180); //look ping sensor to right
 
   int initdist = wallScan(); //check the initial distance before moving
-  Serial.print("start");;
-  Serial.print(initdist);
 
   //make sure that the init dist is actually set
-  /*while(initdist == 0){
+  while(initdist == 0){
     sf.drive(1);
-    delay(20);
+    delay(100);
     sf.drive(0);
     initdist = wallScan();
-  }*/
+  }
   
   sf.drive(1); //start the car moving for this section
   
