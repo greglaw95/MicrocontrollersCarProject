@@ -10,9 +10,10 @@ startMode sm;
 void setup() {
 
   sf.setupStandardFunctions();
-  //sf.turnSensor(-90);
+  //Serial.begin(9600);
+  
   sm.start();
-  //sf.turn(1);
+  //sf.drive(1);
 
   /*
   sf.turnServo(0);
@@ -25,7 +26,7 @@ void setup() {
   */
   
   
-  Serial.begin(9600);
+  //Serial.begin(9600);
   //sf.setupStandardFunctions();
 
   /*
@@ -52,7 +53,9 @@ void setup() {
   sf.turnServo(180);
   
   sf.pingSensor(0);
-  */ 
+  */
+  //sf.pingSensor(0); 
+  //Serial.print(sf.pingSensor(0));
 }
 
 void loop() {
