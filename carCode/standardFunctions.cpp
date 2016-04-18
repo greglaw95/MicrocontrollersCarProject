@@ -103,7 +103,7 @@ return distance;
 }
 
 
-void standardFunctions::turnServo(int degrees){
+void standardFunctions::turnSensor(int degrees){
   if(degrees>180)
     degrees=180;
   if(degrees<0)
