@@ -27,20 +27,16 @@
   if (CminI == -initdist){
     //go straight
     chosendir=0;
-  }
-  if (CminI >= -5 && CminI <= 4){
+  } else if (CminI >= -5 && CminI <= 4){
     //go straight
     chosendir = 0;
-  }
-  if (CminI>4 && CminI<=30){
+  } else if (CminI>4 && CminI<=30){
     //turn right
     chosendir = 1;
-  }     
-  if (CminI<-5 && CminI>=-30){
+  } else if (CminI<-5 && CminI>=-30){
     //turn left
     chosendir = -1;
-  }
-  if (CminI<-30 || CminI>30){
+  } else if (CminI<-30 || CminI>30){
     //change to new distance
     initdist=currdist;
     chosendir=0;
