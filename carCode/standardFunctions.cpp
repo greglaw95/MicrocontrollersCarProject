@@ -51,8 +51,6 @@ void standardFunctions::setupStandardFunctions(){
   pinMode(BACKWARD, OUTPUT);
   pinMode(RIGHT, OUTPUT);
   pinMode(LEFT, OUTPUT);
-
-  myServo.attach(SERVOPIN);
 }
 
 
@@ -113,17 +111,51 @@ void standardFunctions::turnServo(int degrees){
   
 }
 
+int getCountOfSimilarNumbers(int pingValues[],int index){
+  /*returns the count of similar values in the array
+  to the ping value at index*/
+  int i;
+  int counter=0;
+  for(i=0;i<READINGS;i++){
+     int diff = abs(pingValues[i] - pingValues[index]);
+     if(diff<10 && diff>=0){
+       //similar number
+       counter++;
+   }
+  }
+  return counter;
+}
+
 int standardFunctions::pingSensor(int pingID){
+  int pingValues[5];
+  int similarValues[5];
   int currentResult;
   int totalResult=0;
+  int largest=0;
+  int largestIndex=0;
   for(int i=0;i<READINGS;i++){
     do{
       currentResult=soloPingSensor(pingID);
     } while(currentResult==0);
-    totalResult=totalResult+currentResult;
+    pingValues[i]=currentResult;
+    //totalResult=totalResult+currentResult;
   }
-  return totalResult/READINGS;
+
+  for(int i=0;i<READINGS;i++){
+    similarValues[i] = getCountOfSimilarNumbers(pingValues,i); 
+  }
+    //finds one of the numbers that have the highest count of similar numbers
+    for (int i = 0; i < READINGS; i++)
+    {
+        if (largest < similarValues[i]){
+            largest = similarValues[i];
+            largestIndex=i;
+        }
+    }
+  //return totalResult/READINGS;
+  return pingValues[largestIndex];
 }
+
 
 //DO NOT CALL
 /*

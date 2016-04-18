@@ -3,6 +3,7 @@
 #ifndef standardFunctions_h
 #define standardFunctions_h
 
+#include <Servo.h>
 #include <Arduino.h>
 
 
@@ -15,6 +16,7 @@ public:
   void setupStandardFunctions();
   void turn(int direction);
   void drive(int direction);
+//  void turnServo(int degrees);
 };
 
 #endif
