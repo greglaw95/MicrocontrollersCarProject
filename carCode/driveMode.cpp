@@ -1,6 +1,6 @@
 #include "driveMode.h"
-//#include "standardFunctions.h"
-//standardFunctions sf;
+#include "standardFunctions.h"
+static standardFunctions sf;
 
 
 //0 turn left
@@ -8,6 +8,8 @@
 //2 turn right
 
 void driveMode::drive(){
+
+
   
 }
 

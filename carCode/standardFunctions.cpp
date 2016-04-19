@@ -112,6 +112,21 @@ void standardFunctions::turnServo(int degrees){
   
 }
 
+int getCountOfSimilarNumbers(int pingValues[],int index){
+  /*returns the count of similar values in the array
+  to the ping value at index*/
+  int i;
+  int counter=0;
+  for(i=0;i<READINGS;i++){
+     int diff = abs(pingValues[i] - pingValues[index]);
+     if(diff<10 && diff>=0){
+       //similar number
+       counter++;
+   }
+  }
+  return counter;
+}
+
 int standardFunctions::pingSensor(int pingID){
   int pingValues[5];
   int similarValues[5];
@@ -143,20 +158,7 @@ int standardFunctions::pingSensor(int pingID){
 }
 
 
-int getCountOfSimilarNumbers(int pingValues[],int index){
-  /*returns the count of similar values in the array
-  to the ping value at index*/
-  int i;
-  int counter=0;
-  for(i=0;i<READINGS;i++){
-     int diff = abs(pingValues[i] - pingValues[index]);
-     if(diff<10 && diff>=0){
-       //similar number
-       counter++;
-   }
-  }
-  return counter;
-} /*
+ /*
   int i;
   int counter;
   for(i=0;i<READINGS;i++){
