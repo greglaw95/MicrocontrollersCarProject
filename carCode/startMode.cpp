@@ -31,19 +31,29 @@
   if (CminI == -initdist){
     //go straight
     chosendir = 0;
+    sf.turn(chosendir);
+    //delay(100);
   } else if (CminI >= -5 && CminI <= 4){
     //go straight
     chosendir = 0;
+    sf.turn(chosendir);
+    //delay(100);
   } else if (CminI>4 && CminI<=30){
     //turn right
     chosendir = 1;
+    sf.turn(chosendir);
+    delay(90);
   } else if (CminI<-5 && CminI>=-30){
     //turn left
     chosendir = -1;
+    sf.turn(chosendir);
+    delay(50);
   } else if (CminI<-30 || CminI>30){
     //change to new distance
     initdist=currdist;
     chosendir = 0;
+    sf.turn(chosendir);
+    //delay(100);
   }
   
   return chosendir;
@@ -80,16 +90,17 @@
   sf.drive(1); //start the car moving for this section
   
   //set a for loop and loop for a long time until distance reached
-  for (int i=0;i<20;i++){
+  for (int i=0;i<100;i++){
     sf.turn(0);
     distance = wallScan();
     direct = checkDir(distance);
-    sf.turn(direct);
+    //sf.turn(direct);
    // Serial.println(distance);
    // Serial.println(direct);
-    delay(500);
+    //delay(200);
   }
 
+  sf.turnServo(98);
   sf.drive(0);
  }
 
