@@ -4,16 +4,19 @@
 #include "standardFunctions.h"
 
 standardFunctions sf;
-//driveMode dm;
+driveMode dm;
 startMode sm;
 
 void setup() {
-
-  sf.setupStandardFunctions();
   Serial.begin(9600);
+  sf.setupStandardFunctions();
   
-  sm.start();
+  //sm.start();
   //sf.drive(1);
+
+dm.drive();
+
+  
 /*
   sf.turn(1);
   delay(2000);
