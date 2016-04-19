@@ -21,7 +21,11 @@
  int startMode::checkDir(int currdist){
   
   int chosendir = 0;
-  int CminI = currdist-initdist;
+  int CminI = currdist - initdist;
+
+  Serial.println("currdist: "); Serial.print(currdist);
+  Serial.println("initdist: "); Serial.print(initdist);
+  Serial.println("CminI: "); Serial.print(CminI);
 
 
   if (CminI == -initdist){
@@ -61,7 +65,7 @@
 
   sf.turnServo(180); //look ping sensor to right
 
-  int initdist = wallScan(); //check the initial distance before moving
+  initdist = wallScan(); //check the initial distance before moving
 
   //make sure that the init dist is actually set
   while(initdist == 0){
@@ -70,6 +74,8 @@
     sf.drive(0);
     initdist = wallScan();
   }
+
+  
   
   sf.drive(1); //start the car moving for this section
   
@@ -79,7 +85,9 @@
     distance = wallScan();
     direct = checkDir(distance);
     sf.turn(direct);
-    //delay(700);
+   // Serial.println(distance);
+   // Serial.println(direct);
+    delay(500);
   }
 
   sf.drive(0);

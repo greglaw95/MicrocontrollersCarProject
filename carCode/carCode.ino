@@ -10,11 +10,17 @@ startMode sm;
 void setup() {
 
   sf.setupStandardFunctions();
-  //Serial.begin(9600);
+  Serial.begin(9600);
   
   sm.start();
   //sf.drive(1);
-
+/*
+  sf.turn(1);
+  delay(2000);
+  sf.turn(-1);
+  delay(2000);
+  sf.turn(0);
+*/
   /*
   sf.turnServo(0);
   delay(3000);
