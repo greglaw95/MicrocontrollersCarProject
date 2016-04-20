@@ -17,7 +17,8 @@ Servo myServo;
 /*PING SENSOR*/
 //L=0  R=1
 #define TRIGPIN0 6 
-#define ECHOPIN0 7 
+#define ECHOPIN0 7
+#define RESETPIN1 5 
 #define TRIGPIN1 8
 #define ECHOPIN1 9 
 #define READINGS 5
@@ -52,8 +53,8 @@ void standardFunctions::setupStandardFunctions(){
   pinMode(BACKWARD, OUTPUT);
   pinMode(RIGHT, OUTPUT);
   pinMode(LEFT, OUTPUT);
-  pinMode(4,OUTPUT);
-  digitalWrite(4,HIGH);
+  pinMode(RESETPIN1,OUTPUT);
+  digitalWrite(RESETPIN1,LOW);
 }
 
 
@@ -133,21 +134,18 @@ int getCountOfSimilarNumbers(int pingValues[],int index){
 
 int standardFunctions::pingSensor(int pingID){
   int currentReading;
-  int count=0;
-  do{
-    //reset pins for ping1
-    
-    currentReading=soloPingSensor(pingID);
-    count++;
-    if(count==10){
-      digitalWrite(ECHOPIN1,LOW);
-      count=0;
+  int attempts=1;
+  currentReading=soloPingSensor(pingID);
+  while(currentReading==0&&attempts<READINGS){
+    if(pingID==1){
+      digitalWrite(RESETPIN1,HIGH);
+      delay(1);
+      digitalWrite(RESETPIN1,LOW);
+      delay(1);
     }
-   // Serial.println();
-    //Serial.print("count  ");
-   // Serial.print(count);
-    //Serial.println();
-  }while(currentReading==0);
+    attempts++;
+    currentReading=soloPingSensor(pingID);
+  }
   return currentReading;
   /*
   int pingValues[READINGS];

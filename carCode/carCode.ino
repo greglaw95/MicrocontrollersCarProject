@@ -12,7 +12,7 @@ void setup() {
   sf.setupStandardFunctions();
   
   //sm.start();
-  //sf.drive(1);m
+  //sf.drive(1);
 //dm.drive();
 
   
@@ -63,7 +63,6 @@ void setup() {
 }
 
 void loop() {
-  
 //sf.pingSensor(0);
 sf.pingSensor(1);
   //Serial.print(sf.pingSensor(0));
