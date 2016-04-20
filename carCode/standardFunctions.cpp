@@ -52,6 +52,8 @@ void standardFunctions::setupStandardFunctions(){
   pinMode(BACKWARD, OUTPUT);
   pinMode(RIGHT, OUTPUT);
   pinMode(LEFT, OUTPUT);
+  pinMode(4,OUTPUT);
+  digitalWrite(4,HIGH);
 }
 
 
@@ -80,6 +82,8 @@ int soloPingSensor(int pingID){
  
 }else if(pingID==1){
   
+  pinMode(TRIGPIN1, OUTPUT);
+  pinMode(ECHOPIN1, INPUT);
   digitalWrite(TRIGPIN1, LOW); 
   delayMicroseconds(2); 
 
@@ -94,7 +98,7 @@ int soloPingSensor(int pingID){
   distance = duration/58.2;  
   Serial.print("   Distance1  ");
   Serial.print(distance); 
-  delay(50);
+  delay(100);
   Serial.println("   ");
 }
 return distance;
@@ -129,8 +133,20 @@ int getCountOfSimilarNumbers(int pingValues[],int index){
 
 int standardFunctions::pingSensor(int pingID){
   int currentReading;
+  int count=0;
   do{
+    //reset pins for ping1
+    
     currentReading=soloPingSensor(pingID);
+    count++;
+    if(count==10){
+      digitalWrite(ECHOPIN1,LOW);
+      count=0;
+    }
+   // Serial.println();
+    //Serial.print("count  ");
+   // Serial.print(count);
+    //Serial.println();
   }while(currentReading==0);
   return currentReading;
   /*

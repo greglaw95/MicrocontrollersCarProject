@@ -12,9 +12,8 @@ void setup() {
   sf.setupStandardFunctions();
   
   //sm.start();
-  //sf.drive(1);
-
-dm.drive();
+  //sf.drive(1);m
+//dm.drive();
 
   
 /*
@@ -33,10 +32,6 @@ dm.drive();
   delay(3000);
   sf.turnServo(90);
   */
-  
-  
-  //Serial.begin(9600);
-  //sf.setupStandardFunctions();
 
   /*
   sf.drive(1);
@@ -68,6 +63,9 @@ dm.drive();
 }
 
 void loop() {
+  
+//sf.pingSensor(0);
+sf.pingSensor(1);
   //Serial.print(sf.pingSensor(0));
   //sf.turnSensor(25);
   // Serial.println(sf.pingSensor(0));

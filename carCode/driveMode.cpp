@@ -8,8 +8,8 @@ static standardFunctions sf;
 //2 turn right
 
 void driveMode::drive(){
+  sf.turnServo(97);
   sf.drive(1);
-
   /*hit can? change mode?
   if(distance0<5 && distance1<5){
     sf.drive(0);
@@ -22,19 +22,18 @@ void driveMode::drive(){
  
     distance0=sf.pingSensor(0);
     distance1=sf.pingSensor(1);
-  
+    
     diff = abs(distance0-distance1);
-    /*Serial.println();
-    Serial.print("Dist1  ");
+    //Serial.println();
+    /*Serial.print("Dist0  ");
     Serial.print(distance0);
-    Serial.print("   Dist0   ");
-    Serial.print(distance1);
-    Serial.println();
+    Serial.print("   Dist1   ");
+    Serial.print(distance1);*/
     Serial.println();
     Serial.print("diff  ");
     Serial.print(diff);
-    Serial.println();*/
-    
+    Serial.println();
+    delay(1000);
   /*while there isn't a can on our nose*/
     if(diff<5 && diff>=0){
      //both can see therefore go straight
