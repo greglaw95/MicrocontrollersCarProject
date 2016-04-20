@@ -74,7 +74,7 @@
   int direct;
 
   sf.turnServo(180); //look ping sensor to right
-
+  delay(100);
   initdist = wallScan(); //check the initial distance before moving
 
   //make sure that the init dist is actually set
@@ -91,7 +91,7 @@
   
   //set a for loop and loop for a long time until distance reached
   for (int i=0;i<100;i++){
-    sf.turn(0);
+    //sf.turn(0);
     distance = wallScan();
     direct = checkDir(distance);
     //sf.turn(direct);

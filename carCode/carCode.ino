@@ -14,7 +14,7 @@ void setup() {
   //sm.start();
   //sf.drive(1);
 
-dm.drive();
+//dm.drive();
 
   
 /*
@@ -68,9 +68,5 @@ dm.drive();
 }
 
 void loop() {
-  //Serial.print(sf.pingSensor(0));
-  //sf.turnSensor(25);
-  // Serial.println(sf.pingSensor(0));
-  // Serial.print(" ");
-  // Serial.print(sf.pingSensor(1));
+  sf.pingSensor(1);
 }
