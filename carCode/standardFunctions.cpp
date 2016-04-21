@@ -134,7 +134,7 @@ int getCountOfSimilarNumbers(int pingValues[],int index){
 
 int standardFunctions::pingSensor(int pingID){
   int currentReading;
-  int attempts=1;
+  int attempts=0;
   currentReading=soloPingSensor(pingID);
   while(currentReading==0&&attempts<READINGS){
     if(pingID==1){
