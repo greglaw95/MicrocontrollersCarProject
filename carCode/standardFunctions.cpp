@@ -73,18 +73,15 @@ int soloPingSensor(int pingID){
  
  duration = pulseIn(ECHOPIN0, HIGH, TIMEOUT); //wait until sound reflects back with timeout
  
- Serial.print("Time0  ");
- Serial.print(duration);
+ //Serial.print("Time0  ");
+ //Serial.print(duration);
  distance = duration/58.2;  
- Serial.print("   Distance0  ");
- Serial.print(distance); 
- delay(50);
- Serial.println("   ");
+ //Serial.print("   Distance0  ");
+ //Serial.print(distance); 
+ //delay(100);
+ //Serial.println("   ");
  
 }else if(pingID==1){
-  
-  pinMode(TRIGPIN1, OUTPUT);
-  pinMode(ECHOPIN1, INPUT);
   digitalWrite(TRIGPIN1, LOW); 
   delayMicroseconds(2); 
 
@@ -93,14 +90,13 @@ int soloPingSensor(int pingID){
  
   digitalWrite(TRIGPIN1, LOW);
   duration = pulseIn(ECHOPIN1, HIGH, TIMEOUT); //added timeout
-  
-  Serial.print("Time1  ");
-  Serial.print(duration);
+  //Serial.print("Time1  ");
+  //Serial.print(duration);
   distance = duration/58.2;  
-  Serial.print("   Distance1  ");
-  Serial.print(distance); 
-  delay(100);
-  Serial.println("   ");
+  //Serial.print("   Distance1  ");
+  //Serial.print(distance); 
+  //delay(100);
+  //Serial.println("   ");
 }
 return distance;
 
@@ -136,17 +132,30 @@ int standardFunctions::pingSensor(int pingID){
   int currentReading;
   int attempts=0;
   currentReading=soloPingSensor(pingID);
-  while(currentReading==0&&attempts<READINGS){
+  for(;attempts<READINGS; attempts++){
     if(pingID==1){
       digitalWrite(RESETPIN1,HIGH);
-      delay(1);
+      delay(3);
       digitalWrite(RESETPIN1,LOW);
-      delay(1);
+      delay(3);
     }
-    attempts++;
     currentReading=soloPingSensor(pingID);
+    if(currentReading!=0){
+      Serial.print("   pingSensor");
+      Serial.print(pingID);
+      Serial.print(":   ");
+      Serial.print(currentReading);
+      Serial.println();
+      return currentReading;
+    }
   }
-  return currentReading;
+  Serial.print("   pingSensor");
+  Serial.print(pingID);
+  Serial.print(":   ");
+  Serial.print(300);
+  Serial.println();
+  return 300;
+  
   /*
   int pingValues[READINGS];
   int similarValues[READINGS];

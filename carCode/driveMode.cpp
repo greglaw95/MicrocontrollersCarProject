@@ -35,7 +35,7 @@ void driveMode::drive(){
     Serial.println();
     //delay(1000);
   /*while there isn't a can on our nose*/
-    if(diff<6 && diff>=0){
+    if(diff<10 && diff>=0){
      //both can see therefore go straight
      Serial.print("  straight  ");
      sf.turn(0);
@@ -43,12 +43,12 @@ void driveMode::drive(){
     }else if(distance0<distance1){
      //turn motor to go left
       sf.drive(1);
-      sf.turn(-1);
-      Serial.print("  left+forward   ");
+      sf.turn(1);
+      Serial.print("  right   ");
     }else if(distance1<distance0){
       //turn right
-      Serial.print("  right+forward  ");
-      sf.turn(1);
+      Serial.print("  left  ");
+      sf.turn(-1);
       sf.drive(1);
     }
     Serial.println();
