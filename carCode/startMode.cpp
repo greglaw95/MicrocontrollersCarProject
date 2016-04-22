@@ -113,8 +113,11 @@ void startMode::setUp(){
   sf.turnServo(RIGHT); //look ping sensor to right
   lookdir=1;
   delay(1000);
-
  /*
+=======
+  sf.turnServo(180); //look ping sensor to right
+  delay(100);
+>>>>>>> origin/idogarrythings
   initdist = wallScan(); //check the initial distance before moving
 
   //make sure that the init dist is actually set
@@ -124,9 +127,9 @@ void startMode::setUp(){
     sf.drive(0);
     initdist = wallScan();
   }
+<<<<<<< HEAD
 */
-  wallScan();
-  
+  wallScan();  
   sf.drive(1); //start the car moving for this section
   
   //set a for loop and loop for a long time until distance reached
