@@ -69,9 +69,7 @@
   do{
     pingval = sf.pingSensor(0);
     if(pingval>200){
-      sf.drive(0);
       Serial.print("Changing side");
-      delay(1000);
       //change direction
       initdist=0;
       if(lookdir==1){
@@ -81,6 +79,7 @@
         lookdir=1;
         sf.turnServo(RIGHT);
       }
+      delay(1000);
     }else{
       if(initdist==0){
         initdist=pingval;
@@ -133,7 +132,7 @@ void startMode::setUp(){
   sf.drive(1); //start the car moving for this section
   
   //set a for loop and loop for a long time until distance reached
-  for (int i=0;i<100;i++){
+  for (int i=0;i<500;i++){
     //sf.turn(0);
     distance = wallScan();
     checkDirAndTurn(distance);
