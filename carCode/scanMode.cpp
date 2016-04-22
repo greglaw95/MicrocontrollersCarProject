@@ -4,6 +4,7 @@
 #define UNRELIABLE 150
 #define ANGLEINTERVAL 15
 #define LINETOLERANCE 10
+#define READINGS 12
 
 static standardFunctions sf;
 
@@ -14,7 +15,7 @@ void pointAt(int direction){
 
 /*
  * Given the angle from the car and distance from the car.
- * Gives array [x,y] with representative co-ordinate.
+ * Gives array [x,y] with car as 0,0
  */
 double* getCoOrd(int angle,double magnitude){
   double* coOrd=(double*) malloc(2*sizeof(double));
@@ -38,7 +39,7 @@ double* equationOfLine(double* coOrdOne,double* coOrdTwo){
 
 
  /*
-  * Returns -1 if it matches, 1 otherwise
+  * Returns 1 if it matches, -1 otherwise
  */
  int checkMatchesWall(double* point,double* wall){
 	double expectedY = wall[0]*point[0]+wall[1]; 
@@ -48,17 +49,17 @@ double* equationOfLine(double* coOrdOne,double* coOrdTwo){
 	}
 	if(difference<LINETOLERANCE){
 		//It's a wall
-		return -1;
+		return 1;
 	}else{
 		//It's not a wall
-		return 1;
+		return -1;
 	}
  }
 
 /*
  * Given the first position of 3 values which potentially could make
- * a wall or show a can, with a no reading on either side. Will return the position of the can or -1
- * if all 3 form a wall.
+ * a wall or show a can. Returns -1 if it's all a wall or -2 if one
+ * of them is a can.
  */
 int wallOrCan(int* values,int start){
   double* pointOne=getCoOrd(start*ANGLEINTERVAL,values[start]);
@@ -144,89 +145,100 @@ int wallOrCan(int* values,int start){
    return answer;
  }
 
-/*
- * Mark a possibility for two readings in a row given the position of the first.
- */
-void markPossibility(int start){
-  return;
-}
 
 int findCan(){
   //Need to consider checking next value aswell if it isn't unknown (i.e. meeting the start of the loop) this gets really confusing.
-  char meaning[24];
-  int value[24];
+  int currentAngle=0;
+  int hadNoReading=0;
+  int possibility=-1;
+  int value[READINGS];
   double* wall;
   double* result;
   int consecutiveReadings=0;
   int beforeReadingValue;
-  for(int i=0;i<24;i++){
-    //Before starting, fill arrays up to say unknown.
-    value[i]=-1;
-    meaning[i]='U';
-  }
-  for(int i=0;i<24;i++){
-	  //Need to think about going back to find first no reading to start on.
+  for(int i=0;i<READINGS;i++){
     value[i]=sf.pingSensor(0);
-    if(value[i]>UNRELIABLE){
-      meaning[i]='N';
-      switch (consecutiveReadings) {
-        case 0:
-          //Not an end of readings nothing interesting here.
-          break;
-        case 1:
+    if(value[i]==0){
+      //No reading
+      if(hadNoReading==1){
+        possibility=i;
+      }else{
+        switch (consecutiveReadings) {
+          case 0:
+            //Not an end of readings nothing interesting here.
+            break;
+          case 1:
+            //Found can
             return i-1;
             break;
-        case 2:
-          //Need to look at what parameters will be needed.
-          markPossibility(i-2);
-          break;
-        case 3:
-          return wallOrCan(value,i-3);
-          break;
+          case 2:
+            //Need to look at what parameters will be needed.
+            possibility=i-1;
+            break;
+          case 3:
+            int tempValue=wallOrCan(value,i-3);
+            if(tempValue!=-1){
+              //not a wall
+              return tempValue;
+            }
+            break;
+          }
       }
       consecutiveReadings=0;
+      hadNoReading=1;
     }else{
-      meaning[i]='R';
       consecutiveReadings++;
       if(consecutiveReadings==4){
         //Form wall or return can
-		result = formWallOrFindCan(value,i-3);
-		if (result[1]==666){
-			//Error just move on.
-			consecutiveReadings=0;
-		}else{
-			if(result[1]==0){
-				return result[0];
-			}else{
-				wall=result;
-			}
-		}
+		    result = formWallOrFindCan(value,i-3);
+		    if (result[1]==666){
+			    //Error just move on.
+			    consecutiveReadings=0;
+		    }else{
+			    if(result[1]==0){
+				    return result[0];
+			    }else{
+				    wall=result;
+			    }
+		    }
       }else if(consecutiveReadings>4){
         //check reading matches wall or return as can
-		if(checkMatchesWall(getCoOrd(i*ANGLEINTERVAL,value[i]),wall)==1){
-			//If the next one doesn't match the wall it's a can go for it.
-			return i;
-		}
+		    if(checkMatchesWall(getCoOrd(i*ANGLEINTERVAL,value[i]),wall)!=1){
+			    //If the next one doesn't match the wall it's a can go for it.
+			    return i;
+		    }
       }
     }
-    sf.turnSensor(ANGLEINTERVAL);
+    currentAngle+=ANGLEINTERVAL;
+    sf.turnSensor(currentAngle);
   }
-  //Haven't found can yet so look at possibilities and walls and stuff
-  //if you still have no idea return -1 let the above level move and call this again.
+  return possibility;
 }
 
 void scanMode::scan(standardFunctions standardFunc){
   sf=standardFunc;
-  //Need multiple responses to find can
-  //-1 edge forward try again
-  //-2 edge forward mini scan
-  //anything else point at it and return
-  findCan();
-  return;
-//find can
-// if can found, point at can, return
-//else, drive for short time, try again
+  int result=findCan();
+  if(result==-1){
+    //Didn't find can turn 180
+    pointAt(18);
+    return scan(sf);
+  }else if(result==-2){
+    //Edge towards can check again
+    sf.drive(1);
+    delay(250);
+    sf.drive(0);
+    return scan(sf);
+  }else{
+    pointAt(result);
+    return;
+  }
 }
+
+/**
+ * If we have time:
+ * Improve what happens if we don't find can
+ * Possible miniscan?
+ */
 
 
 
