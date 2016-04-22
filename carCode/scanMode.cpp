@@ -10,7 +10,15 @@ static standardFunctions sf;
 
 //Turn the car to point in a certain direction
 void pointAt(int direction){
-  
+  if(direction==6){
+    return;
+  }
+  if(direction>6&&direction<18){
+    sf.turn(1);
+  }else{
+    sf.turn(0);
+  }
+  //Need to work out how long to drive for each one
 }
 
 /*
