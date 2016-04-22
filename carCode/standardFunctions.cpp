@@ -17,7 +17,8 @@ Servo myServo;
 /*PING SENSOR*/
 //L=0  R=1
 #define TRIGPIN0 6 
-#define ECHOPIN0 7 
+#define ECHOPIN0 7
+#define RESETPIN1 5 
 #define TRIGPIN1 8
 #define ECHOPIN1 9 
 #define READINGS 5
@@ -39,7 +40,7 @@ Code for old servo approach
 #define FULLLEFT 1700
 #define FULLRIGHT 1300
 
-#define SERVOPIN 10
+#define SERVOPIN 13
 
 
 void standardFunctions::setupStandardFunctions(){
@@ -52,6 +53,8 @@ void standardFunctions::setupStandardFunctions(){
   pinMode(BACKWARD, OUTPUT);
   pinMode(RIGHT, OUTPUT);
   pinMode(LEFT, OUTPUT);
+  pinMode(RESETPIN1,OUTPUT);
+  digitalWrite(RESETPIN1,LOW);
 }
 
 
@@ -80,6 +83,8 @@ int soloPingSensor(int pingID){
  
 }else if(pingID==1){
   
+  pinMode(TRIGPIN1, OUTPUT);
+  pinMode(ECHOPIN1, INPUT);
   digitalWrite(TRIGPIN1, LOW); 
   delayMicroseconds(2); 
 
@@ -94,7 +99,7 @@ int soloPingSensor(int pingID){
   distance = duration/58.2;  
   Serial.print("   Distance1  ");
   Serial.print(distance); 
-  delay(50);
+  delay(100);
   Serial.println("   ");
 }
 return distance;
@@ -129,39 +134,31 @@ int getCountOfSimilarNumbers(int pingValues[],int index){
 
 int standardFunctions::pingSensor(int pingID){
   int currentReading;
-  do{
-    currentReading=soloPingSensor(pingID);
-  }while(currentReading==0);
-  return currentReading;
-  /*
-  int pingValues[READINGS];
-  int similarValues[READINGS];
-  int currentResult;
-  int totalResult=0;
-  int largest=0;
-  int largestIndex=0;
-  for(int i=0;i<READINGS;i++){
-    do{
-      currentResult=soloPingSensor(pingID);
-    } while(currentResult==0);
-    pingValues[i]=currentResult;
-    //totalResult=totalResult+currentResult;
-  }
-
-  for(int i=0;i<READINGS;i++){
-    similarValues[i] = getCountOfSimilarNumbers(pingValues,i); 
-  }
-    //finds one of the numbers that have the highest count of similar numbers
-    for (int i = 0; i < READINGS; i++)
-    {
-        if (largest < similarValues[i]){
-            largest = similarValues[i];
-            largestIndex=i;
-        }
+  int attempts=0;
+  currentReading=soloPingSensor(pingID);
+  for(;attempts<READINGS; attempts++){
+    if(pingID==1){
+      digitalWrite(RESETPIN1,HIGH);
+      delay(3);
+      digitalWrite(RESETPIN1,LOW);
+      delay(3);
     }
-  //return totalResult/READINGS;
-  return pingValues[largestIndex];
-  */
+    currentReading=soloPingSensor(pingID);
+    if(currentReading!=0){
+      Serial.print("   pingSensor");
+      Serial.print(pingID);
+      Serial.print(":   ");
+      Serial.print(currentReading);
+      Serial.println();
+      return currentReading;
+    }
+  }
+  Serial.print("   pingSensor");
+  Serial.print(pingID);
+  Serial.print(":   ");
+  Serial.print(300);
+  Serial.println();
+  return 300;
 }
 
 

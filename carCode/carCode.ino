@@ -4,17 +4,26 @@
 #include "standardFunctions.h"
 
 standardFunctions sf;
-//driveMode dm;
+driveMode dm;
 startMode sm;
 
 void setup() {
-
+  Serial.begin(9600);
+  Serial.print("start");
   sf.setupStandardFunctions();
-  //Serial.begin(9600);
-  
+  //sf.turnServo(180);
   sm.start();
   //sf.drive(1);
+  //dm.drive();
 
+  
+/*
+  sf.turn(1);
+  delay(2000);
+  sf.turn(-1);
+  delay(2000);
+  sf.turn(0);
+*/
   /*
   sf.turnServo(0);
   delay(3000);
@@ -24,10 +33,6 @@ void setup() {
   delay(3000);
   sf.turnServo(90);
   */
-  
-  
-  //Serial.begin(9600);
-  //sf.setupStandardFunctions();
 
   /*
   sf.drive(1);
@@ -59,6 +64,17 @@ void setup() {
 }
 
 void loop() {
+
+//sf.turn(-1);
+//delay(1000);
+//sf.turn(0);
+//delay(1000);
+//sf.turn(1);
+//delay(1000);
+//sf.turn(0);
+//delay(1000);
+//sf.pingSensor(0);
+//sf.pingSensor(1);
   //Serial.print(sf.pingSensor(0));
   //sf.turnSensor(25);
   // Serial.println(sf.pingSensor(0));

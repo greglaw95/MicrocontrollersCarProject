@@ -9,10 +9,11 @@
 
 class startMode{
   private:
-    int checkDir(int currDist);
+    int checkDirAndTurn(int currDist);
     int wallScan();
+    void setUp();
   public:
-    void start();
+    int start();
 };
 
 #endif
