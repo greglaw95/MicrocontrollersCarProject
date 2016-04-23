@@ -1,10 +1,12 @@
+#include <Servo.h>
+
 /**
  * common functionality code file
  **/
 #include "standardFunctions.h"
-//#include <Servo.h>
 
-//Servo myServo;
+
+Servo myServo;
 
 
 /*MOTORS*/
@@ -17,7 +19,8 @@
 /*PING SENSOR*/
 //L=0  R=1
 #define TRIGPIN0 6 
-#define ECHOPIN0 7 
+#define ECHOPIN0 7
+#define RESETPIN1 5 
 #define TRIGPIN1 8
 #define ECHOPIN1 9 
 #define READINGS 5
@@ -39,7 +42,7 @@ Code for old servo approach
 #define FULLLEFT 1700
 #define FULLRIGHT 1300
 
-#define SERVOPIN 10
+#define SERVOPIN 13
 
 
 void standardFunctions::setupStandardFunctions(){
@@ -47,12 +50,13 @@ void standardFunctions::setupStandardFunctions(){
   pinMode(ECHOPIN0, INPUT);
   pinMode(TRIGPIN1, OUTPUT);
   pinMode(ECHOPIN1, INPUT);
-  //myServo.attach(SERVOPIN);
+  myServo.attach(SERVOPIN);
   pinMode(FORWARD, OUTPUT);
   pinMode(BACKWARD, OUTPUT);
   pinMode(RIGHT, OUTPUT);
   pinMode(LEFT, OUTPUT);
-
+  pinMode(RESETPIN1,OUTPUT);
+  digitalWrite(RESETPIN1,LOW);
 }
 
 
@@ -71,16 +75,15 @@ int soloPingSensor(int pingID){
  
  duration = pulseIn(ECHOPIN0, HIGH, TIMEOUT); //wait until sound reflects back with timeout
  
- Serial.print("Time0  ");
- Serial.print(duration);
+ //Serial.print("Time0  ");
+ //Serial.print(duration);
  distance = duration/58.2;  
- Serial.print("   Distance0  ");
- Serial.print(distance); 
- delay(50);
- Serial.println("   ");
+ //Serial.print("   Distance0  ");
+ //Serial.print(distance); 
+ //delay(100);
+ //Serial.println("   ");
  
 }else if(pingID==1){
-  
   digitalWrite(TRIGPIN1, LOW); 
   delayMicroseconds(2); 
 
@@ -89,14 +92,14 @@ int soloPingSensor(int pingID){
  
   digitalWrite(TRIGPIN1, LOW);
   duration = pulseIn(ECHOPIN1, HIGH, TIMEOUT); //added timeout
-  
-  Serial.print("Time1  ");
-  Serial.print(duration);
+
+  //Serial.print("Time1  ");
+  //Serial.print(duration);
   distance = duration/58.2;  
-  Serial.print("   Distance1  ");
-  Serial.print(distance); 
-  delay(50);
-  Serial.println("   ");
+  //Serial.print("   Distance1  ");
+  //Serial.print(distance); 
+  //delay(100);
+  //Serial.println("   ");
 }
 return distance;
 
@@ -109,7 +112,7 @@ void standardFunctions::turnServo(int degrees){
   if(degrees<0)
     degrees-0;
   
-  //myServo.write(degrees);
+  myServo.write(degrees);
   
 }
 
@@ -129,51 +132,35 @@ int getCountOfSimilarNumbers(int pingValues[],int index){
 }
 
 int standardFunctions::pingSensor(int pingID){
-  int pingValues[5];
-  int similarValues[5];
-  int currentResult;
-  int totalResult=0;
-  int largest=0;
-  int largestIndex=0;
-  for(int i=0;i<READINGS;i++){
-    do{
-      currentResult=soloPingSensor(pingID);
-    } while(currentResult==0);
-    pingValues[i]=currentResult;
-    //totalResult=totalResult+currentResult;
-  }
 
-  for(int i=0;i<READINGS;i++){
-    similarValues[i] = getCountOfSimilarNumbers(pingValues,i); 
-  }
-    //finds one of the numbers that have the highest count of similar numbers
-    for (int i = 0; i < READINGS; i++)
-    {
-        if (largest < similars[i]){
-            largest = similars[i];
-            largestIndex=i;
-        }
+  int currentReading;
+  int attempts=0;
+  currentReading=soloPingSensor(pingID);
+  for(;attempts<READINGS; attempts++){
+    if(pingID==1){
+      digitalWrite(RESETPIN1,HIGH);
+      delay(3);
+      digitalWrite(RESETPIN1,LOW);
+      delay(3);
     }
-  //return totalResult/READINGS;
-  return pingValues[largestIndex];
+    currentReading=soloPingSensor(pingID);
+    if(currentReading!=0){
+      Serial.print("   pingSensor");
+      Serial.print(pingID);
+      Serial.print(":   ");
+      Serial.print(currentReading);
+      Serial.println();
+      return currentReading;
+    }
+  }
+  Serial.print("   pingSensor");
+  Serial.print(pingID);
+  Serial.print(":   ");
+  Serial.print(300);
+  Serial.println();
+  return 300;
 }
 
-
- /*
-  int i;
-  int counter;
-  for(i=0;i<READINGS;i++){
-     int diff = pingValues[i] - pingValues[number];
-     if(diff<10 || diff < -10){
-       //similar number
-       counter++;
-     } 
-  }
- similars[number]=counter;
- getCountOfSimilarNumbers(pingValues, number++, similars);
- 
- return similars;
-}*/
 
 //DO NOT CALL
 /*

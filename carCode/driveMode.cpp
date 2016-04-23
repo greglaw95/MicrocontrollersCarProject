@@ -8,7 +8,7 @@ static standardFunctions sf;
 //2 turn right
 
 void driveMode::drive(){
-  sf.turnServo(94);
+  sf.turnServo(98);
   sf.drive(1);
   /*hit can? change mode?
   if(distance0<5 && distance1<5){
@@ -54,14 +54,10 @@ void driveMode::drive(){
     Serial.println();
    }
    while(distance0!=1 && distance1!=1);
-   //while(distance0<5 || distance1<5); //hit a can or a wall
-    
-   /*We've hit something, check what it is by seeing if the 
+     /*We've hit something, check what it is by seeing if the 
     * ping values change. Non moving, low values = wall.
     * Higher values after the low values that broke it out 
     * of this loop. Probably a can
     */
-          
   sf.drive(0);
 }
-
