@@ -21,6 +21,7 @@
 #define TRIGPIN1 8
 #define ECHOPIN1 9 
 #define READINGS 5
+#define TIMEOUT 7000
 
 /*
 Code for old servo approach
@@ -68,7 +69,7 @@ int soloPingSensor(int pingID){
  
  digitalWrite(TRIGPIN0, LOW); 
  
- duration = pulseIn(ECHOPIN0, HIGH, 10); //wait until sound reflects back with timeout
+ duration = pulseIn(ECHOPIN0, HIGH, TIMEOUT); //wait until sound reflects back with timeout
  
  Serial.print("Time0  ");
  Serial.print(duration);
@@ -87,7 +88,7 @@ int soloPingSensor(int pingID){
   delayMicroseconds(10); 
  
   digitalWrite(TRIGPIN1, LOW);
-  duration = pulseIn(ECHOPIN1, HIGH, 10); //added timeout
+  duration = pulseIn(ECHOPIN1, HIGH, TIMEOUT); //added timeout
   
   Serial.print("Time1  ");
   Serial.print(duration);
