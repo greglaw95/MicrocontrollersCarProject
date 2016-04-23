@@ -2,60 +2,63 @@
 #include "standardFunctions.h"
 static standardFunctions sf;
 
-
-
 //0 turn left
 //1 go straight
 //2 turn right
 
 void driveMode::drive(){
 
-  byte s;
-  byte r;
-  byte l;
-  int distance0,distance1=0;
-  int wall;
-  
-  distance1=sf.pingSensor(1);
-  distance0=sf.pingSensor(0);
-
-  long diff=0;
-  diff = abs(distance0-distance1);
-
-  if(diff<5 && diff>=0){
-    //both can see therefore go straight
-    s++;
-  }else if(distance0<distance1){
-    //turn motor to go left
-    r++;
-  }else if(distance1<distance0){
-    l++;
-  }
-
-  if(l==3){
-    l=0;
-    Serial.print("go left");
-  }
-  if(r==3){
-    r=0;
-    Serial.print("go right");
-  }
-  if(s==3){
-    s=0;
-    Serial.print("go straight");
-  }
-
-  /*If banging against wall for some amount of time*/
+  sf.turnServo(98);
+  sf.drive(1);
+  /*hit can? change mode?
   if(distance0<5 && distance1<5){
-    wall++;
-  } 
-  if(wall==10){
-    Serial.print("Dats a wall"); //
-    wall=0;
-  }
-   
+    sf.drive(0);
+    sf.turn(0);
+    return;
+  }*/
+   long diff=0;
+   int distance0,distance1=0;
+ do{
+ 
+    distance0=sf.pingSensor(0);
+    distance1=sf.pingSensor(1);
+    
+    diff = abs(distance0-(distance1+3));
+    //Serial.println();
+    /*Serial.print("Dist0  ");
+    Serial.print(distance0);
+    Serial.print("   Dist1   ");
+    Serial.print(distance1);*/
+    Serial.println();
+    Serial.print("diff  ");
+    Serial.print(diff);
+    Serial.println();
+    //delay(1000);
+  /*while there isn't a can on our nose*/
+    if(diff<10 && diff>=0){
+     //both can see therefore go straight
+     Serial.print("  straight  ");
+     sf.turn(0);
+     sf.drive(1);
+    }else if(distance0<distance1){
+     //turn motor to go left
+      sf.drive(1);
+      sf.turn(1);
+      Serial.print("  right   ");
+    }else if(distance1<distance0){
+      //turn right
+      Serial.print("  left  ");
+      sf.turn(-1);
+      sf.drive(1);
+    }
+    Serial.println();
+   }
+   while(distance0!=1 && distance1!=1);
+     /*We've hit something, check what it is by seeing if the 
+    * ping values change. Non moving, low values = wall.
+    * Higher values after the low values that broke it out 
+    * of this loop. Probably a can
+    */
+  sf.drive(0);
 }
 
-int driveMode::returnone(){
-  return 1;
-}
