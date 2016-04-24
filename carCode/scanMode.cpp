@@ -66,10 +66,10 @@ double* equationOfLine(double* coOrdOne,double* coOrdTwo){
 
 /*
  * Given the first position of 3 values which potentially could make
- * a wall or show a can. Returns -1 if it's all a wall or -2 if one
+ * a wall or show a can. Returns -1 if it's all a wall or 1 if one
  * of them is a can.
  */
-int wallOrCan(int* values,int start){
+int canPresent(int* values,int start){
   double* pointOne=getCoOrd(start*ANGLEINTERVAL,values[start]);
   double* pointTwo=getCoOrd((start+1)*ANGLEINTERVAL,values[start+1]);
   double* pointThree=getCoOrd((start+2)*ANGLEINTERVAL,values[start+2]);
@@ -78,11 +78,9 @@ int wallOrCan(int* values,int start){
   if(checkMatchesWall(pointThree,equationOneTwo)==-1){
 	  //It's a wall
 	  return -1;
-  }else{
-	  //There's a can there somewhere get closer look again.
-	  pointAt(start+1);
-	  return -2;
   }
+  //There's a can there somewhere
+  return 1;
  }
  
  /*
@@ -99,7 +97,7 @@ int wallOrCan(int* values,int start){
 	 }
 	 for(int i=0;i<2;i++){		 
 		 //Gives point one
-		 //Need combination of 3 points so lowest point can only be 1 or 2
+		 //Need combination of 3 points and only have 4 so lowest point can only be 1 or 2
 		 for(int j=i+1;j<3;j++){
 			 //Gives point two
 			 //Needs at least one more point after it so can only be 3 at max
@@ -149,12 +147,14 @@ int wallOrCan(int* values,int start){
 		 }
 			 
 	 }
-   answer[1]=666;
+   
+   answer[0]=666;
+   answer[1]=0;
    return answer;
  }
 
 
-int findCan(){
+int faceCan(){
   //Need to consider checking next value aswell if it isn't unknown (i.e. meeting the start of the loop) this gets really confusing.
   int currentAngle=0;
   int hadNoReading=0;
@@ -166,10 +166,10 @@ int findCan(){
   int beforeReadingValue;
   for(int i=0;i<READINGS;i++){
     value[i]=sf.pingSensor(0);
-    if(value[i]==0){
+    if(value[i]>UNRELIABLE){
       //No reading
-      if(hadNoReading==1){
-        possibility=i;
+      if(hadNoReading==1&&i>0){
+        possibility=i-1;
       }else{
         switch (consecutiveReadings) {
           case 0:
@@ -177,17 +177,19 @@ int findCan(){
             break;
           case 1:
             //Found can
-            return i-1;
+            pointAt(i-1);
+            return 1;
             break;
           case 2:
             //Need to look at what parameters will be needed.
             possibility=i-1;
             break;
           case 3:
-            int tempValue=wallOrCan(value,i-3);
+            int tempValue=canPresent(value,i-3);
             if(tempValue!=-1){
-              //not a wall
-              return tempValue;
+              //not a wall meaning a closer look should be taken.
+              pointAt(i-2);
+              return 0;
             }
             break;
           }
@@ -199,45 +201,47 @@ int findCan(){
       if(consecutiveReadings==4){
         //Form wall or return can
 		    result = formWallOrFindCan(value,i-3);
-		    if (result[1]==666){
-			    //Error just move on.
-			    consecutiveReadings=0;
-		    }else{
-			    if(result[1]==0){
-				    return result[0];
-			    }else{
-				    wall=result;
+		    if (result[1]==0){
+          if(result[0]>500){
+			      //Error just move on.
+			      consecutiveReadings=0;
+		      }else{
+            pointAt(result[0]);
+				    return 1;
 			    }
-		    }
+		    }else{
+				    wall=result;
+			  }
       }else if(consecutiveReadings>4){
         //check reading matches wall or return as can
 		    if(checkMatchesWall(getCoOrd(i*ANGLEINTERVAL,value[i]),wall)!=1){
 			    //If the next one doesn't match the wall it's a can go for it.
-			    return i;
+			    pointAt(i);
+			    return 1;
 		    }
       }
     }
     currentAngle+=ANGLEINTERVAL;
     sf.turnSensor(currentAngle);
   }
-  return possibility;
+  pointAt(possibility);
+  return 0;
 }
 
 void scanMode::scan(standardFunctions standardFunc){
   sf=standardFunc;
-  int result=findCan();
+  int result=faceCan();
   if(result==-1){
-    //Didn't find can turn 180
+    //Didn't find can turn 180 try again
     pointAt(18);
     return scan(sf);
-  }else if(result==-2){
-    //Edge towards can check again
+  }else if(result==0){
+    //Can roughly ahead edge forwards and try again
     sf.drive(1);
     delay(250);
     sf.drive(0);
     return scan(sf);
   }else{
-    pointAt(result);
     return;
   }
 }
