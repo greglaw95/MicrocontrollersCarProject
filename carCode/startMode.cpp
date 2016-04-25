@@ -12,6 +12,7 @@
 
  #include "startMode.h"
  #include "standardFunctions.h"
+ #include "SimpleTimer/SimpleTimer.h"
 
  #define RIGHT 180
  #define LEFT 0
@@ -22,12 +23,15 @@
 //starting distance as global var
  int initdist;
  int lookdir; //-1=left;0=098;1=right
+ int loopRunning;
+ SimpleTimer t;
 
  int startMode::checkDirAndTurn(int currdist){
   
   int chosendir = 0;
   int CminI = currdist - initdist;
   int changed = 0;  //keep track of switched servo directions
+
 
 /*
   Serial.println("currdist: "); Serial.print(currdist);
@@ -89,6 +93,10 @@
   sf.drive(1);
   return pingval;
  }
+
+ void endLoop(){
+  loopRunning=0;
+ }
 /*
 void startMode::setUp(){
   initdist = wallScan(); //check the initial distance before moving
@@ -130,9 +138,10 @@ void startMode::setUp(){
 */
   wallScan();  
   sf.drive(1); //start the car moving for this section
-  
+  loopRunning=1;
+  t.setTimeout(6000,endLoop);
   //set a for loop and loop for a long time until distance reached
-  for (int i=0;i<500;i++){
+  while(1==loopRunning){
     //sf.turn(0);
     distance = wallScan();
     checkDirAndTurn(distance);
