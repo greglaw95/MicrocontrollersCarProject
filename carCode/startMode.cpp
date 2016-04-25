@@ -59,7 +59,7 @@
   int direct;
 
   //look ping sensor to right
-  sf.turnSensor(90);
+  sf.turnServo(90);
 
   //check the initial distance before moving
   int initdist = wallScan(sf);

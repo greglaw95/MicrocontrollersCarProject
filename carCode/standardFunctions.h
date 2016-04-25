@@ -16,8 +16,6 @@ public:
   void setupStandardFunctions();
   void turn(int direction);
   void drive(int direction);
-//  void turnServo(int degrees);
-//difference pls delete
 };
 
 

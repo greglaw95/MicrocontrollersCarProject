@@ -10,8 +10,7 @@
 
 class driveMode{
   public:
-    void drive();
-    int returnone();
+    void drive(int directionToTurnAfterHitting);
 };
 
 
