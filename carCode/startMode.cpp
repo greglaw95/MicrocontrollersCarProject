@@ -12,22 +12,28 @@
 
  #include "startMode.h"
  #include "standardFunctions.h"
+ #include "MsTimer2/MsTimer2.h"
 
  #define RIGHT 180
  #define LEFT 0
- #define STRAIGHT 98
+ #define STRAIGHT 96
+
+ #define RUNTIME 6000
 
  static standardFunctions sf;
 
 //starting distance as global var
  int initdist;
  int lookdir; //-1=left;0=098;1=right
-
+ int loopRunning;
+ int calls;
+ 
  int startMode::checkDirAndTurn(int currdist){
   
   int chosendir = 0;
   int CminI = currdist - initdist;
   int changed = 0;  //keep track of switched servo directions
+
 
 /*
   Serial.println("currdist: "); Serial.print(currdist);
@@ -58,6 +64,8 @@
     sf.turn(1);
     delay(40);
     sf.turn(0);
+  }else{
+    initdist=currdist;
   }
   return chosendir;
  }
@@ -89,21 +97,15 @@
   sf.drive(1);
   return pingval;
  }
-/*
-void startMode::setUp(){
-  initdist = wallScan(); //check the initial distance before moving
 
-  int notfound = 0
+ void endLoop(){
+  Serial.print("endingLoop");
+    MsTimer2::stop();
+    loopRunning=0;
+ }
 
-  //make sure that the init dist is actually set
-  while(initdist == 0 ){
-    sf.drive(1);
-    delay(100);
-    sf.drive(0);
-    initdist = wallScan();
-  }
-}
- */
+
+
  int startMode::start(){
   int distance;
   int direct;
@@ -112,41 +114,25 @@ void startMode::setUp(){
   sf.turnServo(RIGHT); //look ping sensor to right
   lookdir=1;
   delay(1000);
- /*
-=======
-  sf.turnServo(180); //look ping sensor to right
-  delay(100);
->>>>>>> origin/idogarrythings
-  initdist = wallScan(); //check the initial distance before moving
-
-<<<<<<< HEAD
-  //look ping sensor to right
-  sf.turnServo(90);
-
-  //check the initial distance before moving
-  int initdist = wallScan(sf);
-=======
-  //make sure that the init dist is actually set
-  while(initdist == 0){
-    sf.drive(1);
-    delay(100);
-    sf.drive(0);
-    initdist = wallScan();
-  }
-<<<<<<< HEAD
-*/
+  Serial.begin(9600);
   wallScan();  
   sf.drive(1); //start the car moving for this section
+  loopRunning=1;
+  calls=0;
+  MsTimer2::set(RUNTIME, endLoop);
+  MsTimer2::start();
+  Serial.print("Starting Loop");
   
   //set a for loop and loop for a long time until distance reached
-  for (int i=0;i<500;i++){
+  while(1==loopRunning){
     //sf.turn(0);
+    Serial.print("Looping");
     distance = wallScan();
     checkDirAndTurn(distance);
   }
 
   sf.turnServo(STRAIGHT);
   sf.drive(0);
-  return lookdir;
+  return lookdir*(-1);
  }
 
