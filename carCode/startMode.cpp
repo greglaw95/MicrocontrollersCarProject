@@ -16,7 +16,7 @@
 
  #define RIGHT 180
  #define LEFT 0
- #define STRAIGHT 98
+ #define STRAIGHT 96
 
  #define RUNTIME 6000
 
@@ -64,6 +64,8 @@
     sf.turn(1);
     delay(40);
     sf.turn(0);
+  }else{
+    initdist=currdist;
   }
   return chosendir;
  }
@@ -131,6 +133,6 @@
 
   sf.turnServo(STRAIGHT);
   sf.drive(0);
-  return lookdir;
+  return lookdir*(-1);
  }
 

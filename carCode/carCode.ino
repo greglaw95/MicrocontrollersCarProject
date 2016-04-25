@@ -11,9 +11,11 @@ void setup() {
   Serial.begin(9600);
   Serial.print("start");
   sf.setupStandardFunctions();
-  sm.start();
+  //sm.start();
   //sf.turnServo(98);
-  sf.drive(0);
+  //sf.drive(0);
+  sf.drive(-1);
+  sf.turn(-1);
 }
 
 void loop() {
