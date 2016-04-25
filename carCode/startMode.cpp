@@ -12,7 +12,7 @@
 
  #include "startMode.h"
  #include "standardFunctions.h"
- #include "SimpleTimer/SimpleTimer.h"
+ #include "Timer1/TimerOne.h"
 
  #define RIGHT 180
  #define LEFT 0
@@ -24,8 +24,8 @@
  int initdist;
  int lookdir; //-1=left;0=098;1=right
  int loopRunning;
- SimpleTimer t;
-
+ int calls;
+ 
  int startMode::checkDirAndTurn(int currdist){
   
   int chosendir = 0;
@@ -95,23 +95,17 @@
  }
 
  void endLoop(){
-  loopRunning=0;
- }
-/*
-void startMode::setUp(){
-  initdist = wallScan(); //check the initial distance before moving
-
-  int notfound = 0
-
-  //make sure that the init dist is actually set
-  while(initdist == 0 ){
-    sf.drive(1);
-    delay(100);
-    sf.drive(0);
-    initdist = wallScan();
+  Serial.print("endingLoop");
+  if(calls==0){
+    calls++;
+  }else{
+    Timer1.detachInterrupt();
+    loopRunning=0;
   }
-}
- */
+ }
+
+
+
  int startMode::start(){
   int distance;
   int direct;
@@ -120,29 +114,18 @@ void startMode::setUp(){
   sf.turnServo(RIGHT); //look ping sensor to right
   lookdir=1;
   delay(1000);
- /*
-=======
-  sf.turnServo(180); //look ping sensor to right
-  delay(100);
->>>>>>> origin/idogarrythings
-  initdist = wallScan(); //check the initial distance before moving
-
-  //make sure that the init dist is actually set
-  while(initdist == 0){
-    sf.drive(1);
-    delay(100);
-    sf.drive(0);
-    initdist = wallScan();
-  }
-<<<<<<< HEAD
-*/
+  Serial.begin(9600);
   wallScan();  
   sf.drive(1); //start the car moving for this section
   loopRunning=1;
-  t.setTimeout(6000,endLoop);
+  calls=0;
+  Serial.print("Starting Loop");
+  Timer1.initialize(6000000); 
+  Timer1.attachInterrupt(endLoop);
   //set a for loop and loop for a long time until distance reached
   while(1==loopRunning){
     //sf.turn(0);
+    Serial.print("Looping");
     distance = wallScan();
     checkDirAndTurn(distance);
   }
