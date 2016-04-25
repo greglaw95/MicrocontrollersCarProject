@@ -6,10 +6,13 @@
 #define LINETOLERANCE 10
 #define READINGS 12
 
+#define QUARTERTURN 250
+
 static standardFunctions sf;
 
 //Turn the car to point in a certain direction
 void pointAt(int direction){
+  
   if(direction==6){
     return;
   }
@@ -17,6 +20,12 @@ void pointAt(int direction){
     sf.turn(1);
   }else{
     sf.turn(0);
+  }
+  sf.drive(1);
+  if(direction<13){
+    delay(QUARTERTURN);
+  }else{
+    delay(QUARTERTURN*2);
   }
   //Need to work out how long to drive for each one
 }
