@@ -1,10 +1,11 @@
-#include <Servo.h>
-
-/**
+/*
  * common functionality code file
  **/
+ 
 #include "standardFunctions.h"
+#include <Servo.h>
 
+//standardFunctions sf;
 
 Servo myServo;
 
@@ -59,8 +60,6 @@ void standardFunctions::setupStandardFunctions(){
   digitalWrite(RESETPIN1,LOW);
 }
 
-
-
 int soloPingSensor(int pingID){
 
  long duration, distance;
@@ -72,7 +71,7 @@ int soloPingSensor(int pingID){
  delayMicroseconds(10); 
  
  digitalWrite(TRIGPIN0, LOW); 
- 
+
  duration = pulseIn(ECHOPIN0, HIGH, TIMEOUT); //wait until sound reflects back with timeout
  
  //Serial.print("Time0  ");
@@ -80,6 +79,7 @@ int soloPingSensor(int pingID){
  distance = duration/58.2;  
  //Serial.print("   Distance0  ");
  //Serial.print(distance); 
+ delay(50);
  //delay(100);
  //Serial.println("   ");
  
@@ -89,7 +89,7 @@ int soloPingSensor(int pingID){
 
   digitalWrite(TRIGPIN1, HIGH);
   delayMicroseconds(10); 
- 
+
   digitalWrite(TRIGPIN1, LOW);
   duration = pulseIn(ECHOPIN1, HIGH, TIMEOUT); //added timeout
   //Serial.print("Time1  ");
@@ -97,9 +97,13 @@ int soloPingSensor(int pingID){
   distance = duration/58.2;  
   //Serial.print("   Distance1  ");
   //Serial.print(distance); 
+  delay(50);
   //delay(100);
   //Serial.println("   ");
 }
+ if(distance==0){
+  return 1000;
+ }
 return distance;
 
 }
