@@ -3,7 +3,7 @@
 #ifndef standardFunctions_h
 #define standardFunctions_h
 
-#include <Servo.h>
+//#include <Servo.h>
 #include <Arduino.h>
 
 

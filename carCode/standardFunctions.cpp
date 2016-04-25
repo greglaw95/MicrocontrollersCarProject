@@ -1,8 +1,10 @@
+#include <Servo.h>
+
 /**
  * common functionality code file
  **/
 #include "standardFunctions.h"
-#include <Servo.h>
+
 
 Servo myServo;
 
@@ -187,8 +189,6 @@ int standardFunctions::pingSensor(int pingID){
   */
 
 }
-
-
 //DO NOT CALL
 /*
 void standardFunctions::turnSensor(int degrees){

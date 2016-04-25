@@ -84,7 +84,7 @@ void driveMode::drive(int directionToTurnAfterHitting){
    //while(distance0!=1 && distance1!=1);
    while(1); //hit a can or a wall
     Serial.print("end");
-   /*We've hit something, check what it is by seeing if the 
+   /*We've hit something, check what it is by seeing if the
     * ping values change. Non moving, low values = wall.
     * Higher values after the low values that broke it out 
     * of this loop = Probably a can
@@ -161,9 +161,6 @@ void driveMode::drive(int directionToTurnAfterHitting){
     //scanMode();
     //startMode(2);
     */
-    
-
-    
     sf.drive(0);
-}
 
+}
