@@ -2,10 +2,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "driveMode.h"
+<<<<<<< HEAD
+=======
+#include "startMode.h"
+>>>>>>> a777f3ef0340e91e888fb088a045162834844170
 #include "standardFunctions.h"
 
 static standardFunctions sf;
 driveMode dm;
+startMode sm;
 
 int distance0,distance1=0;
 int wall=0;
@@ -15,7 +20,9 @@ byte l;
 
 void setup() {
   Serial.begin(9600);
+  Serial.print("start");
   sf.setupStandardFunctions();
+<<<<<<< HEAD
 }
 
 void loop() {
@@ -69,4 +76,14 @@ if(diff<5 && diff>=0){
 }
  
  Serial.println(" ");
+=======
+  sm.start();
+  sf.drive(0);
+  dm.drive();
+
+}
+
+void loop() {
+  dm.drive();
+>>>>>>> a777f3ef0340e91e888fb088a045162834844170
 }
