@@ -165,6 +165,7 @@ int canPresent(int* values,int start){
 
 int faceCan(){
   //Need to consider checking next value aswell if it isn't unknown (i.e. meeting the start of the loop) this gets really confusing.
+  Serial.print("Facing");
   int currentAngle=0;
   int hadNoReading=0;
   int possibility=-1;
@@ -173,6 +174,7 @@ int faceCan(){
   double* result;
   int consecutiveReadings=0;
   int beforeReadingValue;
+  sf.turnServo(currentAngle);
   for(int i=0;i<READINGS;i++){
     value[i]=sf.pingSensor(0);
     if(value[i]>UNRELIABLE){
@@ -231,13 +233,15 @@ int faceCan(){
       }
     }
     currentAngle+=ANGLEINTERVAL;
-    sf.turnSensor(currentAngle);
+    sf.turnServo(currentAngle);
   }
   pointAt(possibility);
   return 0;
 }
 
 void scanMode::scan(standardFunctions standardFunc){
+  Serial.begin(9600);
+  Serial.print("Scanning");
   sf=standardFunc;
   int result=faceCan();
   if(result==-1){
