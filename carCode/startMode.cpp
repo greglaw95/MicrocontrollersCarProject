@@ -12,11 +12,13 @@
 
  #include "startMode.h"
  #include "standardFunctions.h"
- #include "Timer1/TimerOne.h"
+ #include "MsTimer2/MsTimer2.h"
 
  #define RIGHT 180
  #define LEFT 0
  #define STRAIGHT 98
+
+ #define RUNTIME 6000
 
  static standardFunctions sf;
 
@@ -96,12 +98,8 @@
 
  void endLoop(){
   Serial.print("endingLoop");
-  if(calls==0){
-    calls++;
-  }else{
-    Timer1.detachInterrupt();
+    MsTimer2::stop();
     loopRunning=0;
-  }
  }
 
 
@@ -119,9 +117,10 @@
   sf.drive(1); //start the car moving for this section
   loopRunning=1;
   calls=0;
+  MsTimer2::set(RUNTIME, endLoop);
+  MsTimer2::start();
   Serial.print("Starting Loop");
-  Timer1.initialize(6000000); 
-  Timer1.attachInterrupt(endLoop);
+  
   //set a for loop and loop for a long time until distance reached
   while(1==loopRunning){
     //sf.turn(0);
