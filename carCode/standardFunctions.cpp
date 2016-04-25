@@ -3,6 +3,8 @@
  **/
 #include "standardFunctions.h"
 
+//standardFunctions sf;
+
 //L=0  R=1
 #define echoPin0 8 
 #define trigPin0 10
@@ -14,6 +16,10 @@ void standardFunctions::setupStandardFunctions(){
   pinMode(echoPin0, INPUT);
   pinMode(trigPin1, OUTPUT);
   pinMode(echoPin1, INPUT);
+}
+
+int standardFunctions::demo(){
+  return 56;
 }
 
 int standardFunctions::pingSensor(int pingID){
@@ -28,15 +34,16 @@ int standardFunctions::pingSensor(int pingID){
  
  digitalWrite(trigPin0, LOW); 
  
- duration = pulseIn(echoPin0, HIGH); //wait until sound reflects back
+ duration = pulseIn(echoPin0, HIGH,20000); //wait until sound reflects back
  
- Serial.print("Time0  ");
- Serial.print(duration);
+
+ //Serial.print("Time0  ");
+ //Serial.print(duration);
  distance = duration/58.2;  
- Serial.print("   Distance0  ");
- Serial.print(distance); 
+ //Serial.print("   Distance0  ");
+ //Serial.print(distance); 
  delay(50);
- Serial.println("   ");
+ //Serial.println("   ");
  
 }else if(pingID==1){
   
@@ -47,16 +54,19 @@ int standardFunctions::pingSensor(int pingID){
   delayMicroseconds(10); 
  
   digitalWrite(trigPin1, LOW);
-  duration = pulseIn(echoPin1, HIGH);
+  duration = pulseIn(echoPin1, HIGH,20000);
   
-  Serial.print("Time1  ");
-  Serial.print(duration);
+  //Serial.print("   Time1  ");
+  //Serial.print(duration);
   distance = duration/58.2;  
-  Serial.print("   Distance1  ");
-  Serial.print(distance); 
+  //Serial.print("   Distance1  ");
+  //Serial.print(distance); 
   delay(50);
-  Serial.println("   ");
+  //Serial.println("   ");
 }
+ if(distance==0){
+  return 1000;
+ }
 return distance;
 
 }

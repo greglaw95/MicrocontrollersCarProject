@@ -11,6 +11,9 @@ class standardFunctions{
 public:
 	int pingSensor(int pingID);
   void setupStandardFunctions();
+  int demo();
 };
+
+//standardFunctions sf;
 
 #endif
