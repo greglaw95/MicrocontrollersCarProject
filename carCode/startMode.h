@@ -11,7 +11,7 @@ class startMode{
   private:
     int checkDirAndTurn(int currDist);
     int wallScan();
-    void setUp();
+    void endLoop();
   public:
     int start();
 };

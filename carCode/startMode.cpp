@@ -24,9 +24,10 @@
 
 //starting distance as global var
  int initdist;
- int lookdir; //-1=left;0=098;1=right
+ int lookdir; //-1=left;0=096;1=right
  int loopRunning;
  int calls;
+
  
  int startMode::checkDirAndTurn(int currdist){
   
@@ -34,12 +35,6 @@
   int CminI = currdist - initdist;
   int changed = 0;  //keep track of switched servo directions
 
-
-/*
-  Serial.println("currdist: "); Serial.print(currdist);
-  Serial.println("initdist: "); Serial.print(initdist);
-  Serial.println("CminI: "); Serial.print(CminI);
-*/
   if(lookdir==-1){
     CminI*=-1;
   }
@@ -70,6 +65,7 @@
   return chosendir;
  }
 
+
  int startMode::wallScan(){
 
   //pingval = ping the sensor and return the value
@@ -98,12 +94,12 @@
   return pingval;
  }
 
+
  void endLoop(){
   Serial.print("endingLoop");
     MsTimer2::stop();
     loopRunning=0;
  }
-
 
 
  int startMode::start(){
