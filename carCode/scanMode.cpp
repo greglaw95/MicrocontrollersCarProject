@@ -1,10 +1,10 @@
 #include "scanMode.h"
 #include "standardFunctions.h"
 
-#define UNRELIABLE 150
-#define ANGLEINTERVAL 15
-#define LINETOLERANCE 10
-#define READINGS 12
+#define UNRELIABLE 100
+#define ANGLEINTERVAL 30
+#define LINETOLERANCE 80
+#define READINGS 7
 
 #define QUARTERTURN 250
 
@@ -12,7 +12,11 @@ static standardFunctions sf;
 
 //Turn the car to point in a certain direction
 void pointAt(int direction){
-  
+  Serial.print("Pointing at ");
+  Serial.print(direction*ANGLEINTERVAL);
+  Serial.print("\n");
+  sf.turnServo(direction*ANGLEINTERVAL);
+  delay(2000);
   if(direction==6){
     return;
   }
@@ -165,7 +169,7 @@ int canPresent(int* values,int start){
 
 int faceCan(){
   //Need to consider checking next value aswell if it isn't unknown (i.e. meeting the start of the loop) this gets really confusing.
-  Serial.print("Facing");
+  Serial.print("Facing 0 \n");
   int currentAngle=0;
   int hadNoReading=0;
   int possibility=-1;
@@ -175,12 +179,20 @@ int faceCan(){
   int consecutiveReadings=0;
   int beforeReadingValue;
   sf.turnServo(currentAngle);
+  delay(1000);
   for(int i=0;i<READINGS;i++){
     value[i]=sf.pingSensor(0);
+    Serial.print("Value ");
+    Serial.print(value[i]);
+    Serial.print("\n");
     if(value[i]>UNRELIABLE){
+      Serial.print("No Reading\n");
       //No reading
-      if(hadNoReading==1&&i>0){
-        possibility=i-1;
+      if(hadNoReading==0){
+        if(consecutiveReadings==1){
+          pointAt(i);
+          return 1;
+        }
       }else{
         switch (consecutiveReadings) {
           case 0:
@@ -193,66 +205,41 @@ int faceCan(){
             break;
           case 2:
             //Need to look at what parameters will be needed.
-            possibility=i-1;
-            break;
-          case 3:
-            int tempValue=canPresent(value,i-3);
-            if(tempValue!=-1){
-              //not a wall meaning a closer look should be taken.
-              pointAt(i-2);
-              return 0;
-            }
-            break;
+            pointAt(i-1);
+            return 1;
+            break; 
           }
       }
       consecutiveReadings=0;
       hadNoReading=1;
     }else{
+      Serial.print("Reading\n");
       consecutiveReadings++;
-      if(consecutiveReadings==4){
-        //Form wall or return can
-        result = formWallOrFindCan(value,i-3);
-        if (result[1]==0){
-          if(result[0]>500){
-            //Error just move on.
-            consecutiveReadings=0;
-          }else{
-            pointAt(result[0]);
-            return 1;
-          }
-        }else{
-            wall=result;
-        }
-      }else if(consecutiveReadings>4){
-        //check reading matches wall or return as can
-        if(checkMatchesWall(getCoOrd(i*ANGLEINTERVAL,value[i]),wall)!=1){
-          //If the next one doesn't match the wall it's a can go for it.
-          pointAt(i);
-          return 1;
-        }
-      }
     }
     currentAngle+=ANGLEINTERVAL;
     sf.turnServo(currentAngle);
+    Serial.print("Facing ");
+    Serial.print(currentAngle);
+    Serial.print("\n");
+    delay(500);
   }
-  pointAt(possibility);
-  return 0;
+  if(value[READINGS-2]>UNRELIABLE&&value[READINGS-1]<UNRELIABLE){
+    pointAt(READINGS-1);
+    return 1;
+  }
+  return -1;
 }
 
 void scanMode::scan(standardFunctions standardFunc){
   Serial.begin(9600);
-  Serial.print("Scanning");
+  Serial.print("Scanning\n");
   sf=standardFunc;
   int result=faceCan();
+  Serial.print("Result");
+  Serial.print(result);
+  Serial.print("\n");
   if(result==-1){
-    //Didn't find can turn 180 try again
-    pointAt(18);
-    return scan(sf);
-  }else if(result==0){
-    //Can roughly ahead edge forwards and try again
-    sf.drive(1);
-    delay(250);
-    sf.drive(0);
+    //Didn't find can decide what to do
     return scan(sf);
   }else{
     return;
