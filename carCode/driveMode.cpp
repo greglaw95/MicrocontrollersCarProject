@@ -19,7 +19,7 @@ void driveMode::drive(int directionToTurnAfterHitting){
     sf.turn(0);
     return;
   }*/
-  sf.turnServo(98);
+  sf.turnServo(96);
   sf.drive(1);
   
    long diff=0;
@@ -28,6 +28,7 @@ void driveMode::drive(int directionToTurnAfterHitting){
  
     distance0=sf.pingSensor(0);
     distance1=sf.pingSensor(1);
+    //distance1=distance1-3;
     /*
     if(distance0<4 && distance1<4){
       wall++;
@@ -52,7 +53,7 @@ void driveMode::drive(int directionToTurnAfterHitting){
     Serial.println();
     //delay(1000);
   /*while there isn't a can on our nose*/
-    if(diff<10 && diff>=0){
+    if(diff<12 && diff>=0){
      //both can see therefore go straight
      Serial.print("  straight  ");
      sf.turn(0);
@@ -68,6 +69,7 @@ void driveMode::drive(int directionToTurnAfterHitting){
       sf.turn(-1);
       sf.drive(1);
     }
+    
     if(distance0<15 && distance1<15){
       //can is close?
       canclose=1;
@@ -75,14 +77,15 @@ void driveMode::drive(int directionToTurnAfterHitting){
     if(distance0>40 && distance1>40 && canclose==1){
       Serial.println("cancanasdas");
       canclose=0;
-      sf.turn(directionToTurnAfterHitting*-1);
-      delay(turnAfterHittingCan);
+      //sf.turn(directionToTurnAfterHitting*-1);
+      //delay(turnAfterHittingCan);
       
     }
+    
     Serial.println();
    }
-   //while(distance0!=1 && distance1!=1);
-   while(1); //hit a can or a wall
+   while(distance0!=1 && distance1!=1);
+   //while(1); //hit a can or a wall
     Serial.print("end");
    /*We've hit something, check what it is by seeing if the
     * ping values change. Non moving, low values = wall.

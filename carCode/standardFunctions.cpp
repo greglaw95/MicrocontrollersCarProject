@@ -101,9 +101,9 @@ int soloPingSensor(int pingID){
   //delay(100);
   //Serial.println("   ");
 }
- if(distance==0){
+ /*if(distance==0){
   return 1000;
- }
+ }*/
 return distance;
 
 }
@@ -112,8 +112,8 @@ return distance;
 void standardFunctions::turnServo(int degrees){
   if(degrees>180)
     degrees=180;
-  if(degrees<0)
-    degrees-0;
+  if(degrees<8)
+    degrees=8;
   
   myServo.write(degrees);
   

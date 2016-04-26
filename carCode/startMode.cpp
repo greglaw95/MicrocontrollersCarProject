@@ -18,7 +18,7 @@
  #define LEFT 0
  #define STRAIGHT 96
 
- #define RUNTIME 6000
+ #define RUNTIME 5000
 
  static standardFunctions sf;
 
@@ -54,7 +54,7 @@
     sf.turn(chosendir);
     delay(100);
     sf.turn(-1);
-    delay(40);
+    delay(50);
     sf.turn(0);
   } else if (CminI<-5 && CminI>=-30){
     //turn left
@@ -62,7 +62,7 @@
     sf.turn(chosendir);
     delay(100);
     sf.turn(1);
-    delay(40);
+    delay(80);
     sf.turn(0);
   }else{
     initdist=currdist;
@@ -130,9 +130,12 @@
     distance = wallScan();
     checkDirAndTurn(distance);
   }
-
+/*  sf.turn(lookdir*-1);
+  delay(200);
+  sf.turn(0);
+  */
   sf.turnServo(STRAIGHT);
   sf.drive(0);
-  return lookdir*(-1);
+  return lookdir;
  }
 
