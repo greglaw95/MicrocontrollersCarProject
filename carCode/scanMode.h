@@ -10,7 +10,7 @@
 
 class scanMode{
   public:
-    void scan(standardFunctions sf);
+    void scan(standardFunctions standardFunc);
 };
 
 

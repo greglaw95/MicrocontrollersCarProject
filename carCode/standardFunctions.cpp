@@ -1,11 +1,10 @@
-/*
- * common functionality code file
- **/
- 
-#include "standardFunctions.h"
 #include <Servo.h>
 
-//standardFunctions sf;
+/**
+ * common functionality code file
+ **/
+#include "standardFunctions.h"
+
 
 Servo myServo;
 
@@ -23,7 +22,7 @@ Servo myServo;
 #define ECHOPIN0 7
 #define RESETPIN1 5 
 #define TRIGPIN1 8
-#define ECHOPIN1 9 
+#define ECHOPIN1 9
 #define READINGS 5
 #define TIMEOUT 7000
 
@@ -60,6 +59,8 @@ void standardFunctions::setupStandardFunctions(){
   digitalWrite(RESETPIN1,LOW);
 }
 
+
+
 int soloPingSensor(int pingID){
 
  long duration, distance;
@@ -71,7 +72,7 @@ int soloPingSensor(int pingID){
  delayMicroseconds(10); 
  
  digitalWrite(TRIGPIN0, LOW); 
-
+ 
  duration = pulseIn(ECHOPIN0, HIGH, TIMEOUT); //wait until sound reflects back with timeout
  
  //Serial.print("Time0  ");
@@ -79,7 +80,6 @@ int soloPingSensor(int pingID){
  distance = duration/58.2;  
  //Serial.print("   Distance0  ");
  //Serial.print(distance); 
- delay(50);
  //delay(100);
  //Serial.println("   ");
  
@@ -89,7 +89,7 @@ int soloPingSensor(int pingID){
 
   digitalWrite(TRIGPIN1, HIGH);
   delayMicroseconds(10); 
-
+ 
   digitalWrite(TRIGPIN1, LOW);
   duration = pulseIn(ECHOPIN1, HIGH, TIMEOUT); //added timeout
   //Serial.print("Time1  ");
@@ -97,24 +97,19 @@ int soloPingSensor(int pingID){
   distance = duration/58.2;  
   //Serial.print("   Distance1  ");
   //Serial.print(distance); 
-  delay(50);
   //delay(100);
   //Serial.println("   ");
 }
- /*if(distance==0){
-  return 1000;
- }*/
 return distance;
 
 }
 
 
 void standardFunctions::turnServo(int degrees){
-  if(degrees>180)
-    degrees=180;
+  if(degrees>172)
+    degrees=172;
   if(degrees<8)
     degrees=8;
-  
   myServo.write(degrees);
   
 }

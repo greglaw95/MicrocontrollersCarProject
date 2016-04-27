@@ -1,6 +1,3 @@
-#include "scanMode.h"
-#include "standardFunctions.h"
-
 #define UNRELIABLE 100
 #define ANGLEINTERVAL 30
 #define LINETOLERANCE 80
@@ -9,6 +6,9 @@
 #define QUARTERTURN 1000
 
 #define pingReliable 0
+
+#include "scanMode.h"
+#include "standardFunctions.h"
 
 static standardFunctions sf;
 
