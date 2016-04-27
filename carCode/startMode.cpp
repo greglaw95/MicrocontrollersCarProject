@@ -157,7 +157,9 @@ void startMode::setUp(){
     distance = wallScan();
     checkDirAndTurn(distance);
   }
-
+  sf.turn(lookdir*(-1));
+  delay(200);
+  sf.turn(0);
   sf.turnServo(STRAIGHT);
   sf.drive(0);
   return lookdir;

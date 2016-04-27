@@ -11,10 +11,8 @@ void setup() {
   Serial.begin(9600);
   Serial.print("start");
   sf.setupStandardFunctions();
-  
   sm.start();
-  dm.drive(-1);
- 
+  dm.drive(1);
   
 /*
   sf.turn(1);
@@ -64,4 +62,5 @@ void setup() {
 
 
 void loop() {
+  Serial.print(sf.pingSensor(0));
 }
