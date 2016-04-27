@@ -6,7 +6,9 @@
 #define LINETOLERANCE 80
 #define READINGS 7
 
-#define QUARTERTURN 250
+#define QUARTERTURN 1000
+
+#define pingReliable 0
 
 static standardFunctions sf;
 
@@ -20,18 +22,22 @@ void pointAt(int direction){
   if(direction==6){
     return;
   }
-  if(direction>6&&direction<18){
+  if(direction<4){
+    sf.turn(-1);
+    sf.drive(1);
+    delay(500);
+  }else if(direction<8){
+    //Straightish
+  }else if(direction<13){
     sf.turn(1);
+    sf.drive(1);
+    delay(1000);
   }else{
-    sf.turn(0);
+    sf.turn(-1);
+    delay(3700);
   }
-  sf.drive(1);
-  if(direction<13){
-    delay(QUARTERTURN);
-  }else{
-    delay(QUARTERTURN*2);
-  }
-  //Need to work out how long to drive for each one
+  sf.turn(0);
+  sf.drive(0);
 }
 
 /*
@@ -231,6 +237,7 @@ int faceCan(){
 }
 
 void scanMode::scan(standardFunctions standardFunc){
+  pointAt(18);
   Serial.begin(9600);
   Serial.print("Scanning\n");
   sf=standardFunc;
