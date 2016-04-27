@@ -20,14 +20,14 @@ void driveMode::drive(int directionToTurnAfterHitting){
     return;
   }*/
   sf.turnServo(105);
-  sf.drive(1);
+  sf.drive(0);
   
    long diff=0;
    int distance0,distance1=0;
  do{
  
     distance0=sf.pingSensor(0);
-    distance1=sf.pingSensor(1);
+    distance1=sf.pingSensor(1)+8;
     if(distance0>5&&distance1>5&&((distance0<90||distance0>250)&&(distance1<90||distance1>250))){
     //distance1=distance1-3;
     /*
@@ -59,16 +59,22 @@ void driveMode::drive(int directionToTurnAfterHitting){
      Serial.print("  straight  ");
      sf.turn(0);
      sf.drive(1);
+     delay(500);
+     sf.drive(0);
     }else if(distance0<distance1){
      //turn motor to go left
       sf.drive(1);
       sf.turn(1);
+      delay(550);
+      sf.drive(0);
       Serial.print("  right   ");
     }else if(distance1<distance0){
       //turn right
       Serial.print("  left  ");
+      sf.drive(1);
       sf.turn(-1);
-      delay(200);
+      delay(450);
+      sf.drive(0);
       sf.turn(0);
     }
     

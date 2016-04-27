@@ -16,11 +16,14 @@ void setup() {
   Serial.begin(9600);
   Serial.print("start");
   sf.setupStandardFunctions();
-  int dir = sm.start();
+  //sf.turnServo(5);
+  //sf.turn(-1);
+  //sf.drive(1);
+  //int dir = sm.start();
 }
 
 
 void loop() {
   dm.drive(1);
-  s2m.scan(sf);
+  //s2m.scan(sf);
 }

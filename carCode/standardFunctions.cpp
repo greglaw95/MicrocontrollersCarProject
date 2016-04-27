@@ -24,7 +24,7 @@ Servo myServo;
 #define RESETPIN1 5 
 #define TRIGPIN1 8
 #define ECHOPIN1 9 
-#define READINGS 25
+#define READINGS 100
 #define TIMEOUT 7000
 
 /*
