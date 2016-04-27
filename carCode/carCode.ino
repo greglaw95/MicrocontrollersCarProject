@@ -5,28 +5,22 @@
 
 #include "startMode.h"
 #include "standardFunctions.h"
+#include "scanMode.h"
 
 static standardFunctions sf;
 driveMode dm;
 startMode sm;
+scanMode s2m;
 
 void setup() {
   Serial.begin(9600);
   Serial.print("start");
   sf.setupStandardFunctions();
-  //int dir = sm.start();
-  dm.drive(1);
-  //dm.drive(1);
-  /*sf.drive(1);
-  sf.turn(-1);
-  delay(3700);
-  sf.drive(0);
-  sf.turn(0);
-  */
-  
-  
+  int dir = sm.start();
 }
 
 
 void loop() {
+  dm.drive(1);
+  s2m.scan(sf);
 }

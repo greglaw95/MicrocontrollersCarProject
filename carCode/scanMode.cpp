@@ -6,7 +6,10 @@
 #define LINETOLERANCE 80
 #define READINGS 7
 
-#define QUARTERTURN 250
+#define QUARTERTURN 1000
+#define FULLTURN 3700
+
+//Right would be 6000 
 
 static standardFunctions sf;
 
@@ -29,7 +32,8 @@ void pointAt(int direction){
   if(direction<13){
     delay(QUARTERTURN);
   }else{
-    delay(QUARTERTURN*2);
+    sf.turn(-1);
+    delay(3700);
   }
   //Need to work out how long to drive for each one
 }
@@ -234,12 +238,15 @@ void scanMode::scan(standardFunctions standardFunc){
   Serial.begin(9600);
   Serial.print("Scanning\n");
   sf=standardFunc;
+  sf.drive(0);
   int result=faceCan();
   Serial.print("Result");
   Serial.print(result);
   Serial.print("\n");
   if(result==-1){
     //Didn't find can decide what to do
+    sf.drive(1);
+    pointAt(18);
     return scan(sf);
   }else{
     return;

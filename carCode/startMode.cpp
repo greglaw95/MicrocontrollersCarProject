@@ -18,7 +18,7 @@
  #define LEFT 0
  #define STRAIGHT 96
 
- #define RUNTIME 5000
+ #define RUNTIME 10000
 
  static standardFunctions sf;
 
@@ -27,6 +27,7 @@
  int lookdir; //-1=left;0=098;1=right
  int loopRunning;
  int calls;
+ int changeNextTime;
  
  int startMode::checkDirAndTurn(int currdist){
   
@@ -43,13 +44,14 @@
   if(lookdir==-1){
     CminI*=-1;
   }
-  if (CminI >= -10 && CminI <=10){
+  if (CminI >= -5 && CminI <=5){
     //go straight
     chosendir = 0;
     sf.turn(chosendir);
     //delay(100);
   } else if (CminI>4 && CminI<=30){
     //turn right
+    Serial.print("right");
     chosendir = 1;
     sf.turn(chosendir);
     delay(100);
@@ -58,6 +60,7 @@
     sf.turn(0);
   } else if (CminI<-5 && CminI>=-30){
     //turn left
+    Serial.print("left");
     chosendir = -1;
     sf.turn(chosendir);
     delay(100);
@@ -76,7 +79,8 @@
   int pingval;
   do{
     pingval = sf.pingSensor(0);
-    if(pingval>200){
+    if(pingval>200||pingval<5){
+      if(changeNextTime==1){
       Serial.print("Changing side");
       //change direction
       initdist=0;
@@ -88,12 +92,17 @@
         sf.turnServo(RIGHT);
       }
       delay(1000);
+      changeNextTime=0;
+      }else{
+        changeNextTime=1;
+      }
     }else{
+      changeNextTime=0;
       if(initdist==0){
         initdist=pingval;
       }
     }
-  }while(pingval>200);
+  }while(pingval>200||pingval<5);
   sf.drive(1);
   return pingval;
  }
@@ -109,6 +118,7 @@
  int startMode::start(){
   int distance;
   int direct;
+  changeNextTime=0;
   initdist=0;
   sf.turn(0);
   sf.turnServo(RIGHT); //look ping sensor to right
@@ -136,6 +146,7 @@
   */
   sf.turnServo(STRAIGHT);
   sf.drive(0);
+  delay(500);
   return lookdir;
  }
 

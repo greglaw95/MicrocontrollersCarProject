@@ -24,7 +24,7 @@ Servo myServo;
 #define RESETPIN1 5 
 #define TRIGPIN1 8
 #define ECHOPIN1 9 
-#define READINGS 5
+#define READINGS 25
 #define TIMEOUT 7000
 
 /*
@@ -74,15 +74,6 @@ int soloPingSensor(int pingID){
 
  duration = pulseIn(ECHOPIN0, HIGH, TIMEOUT); //wait until sound reflects back with timeout
  
- //Serial.print("Time0  ");
- //Serial.print(duration);
- distance = duration/58.2;  
- //Serial.print("   Distance0  ");
- //Serial.print(distance); 
- delay(50);
- //delay(100);
- //Serial.println("   ");
- 
 }else if(pingID==1){
   digitalWrite(TRIGPIN1, LOW); 
   delayMicroseconds(2); 
@@ -92,26 +83,17 @@ int soloPingSensor(int pingID){
 
   digitalWrite(TRIGPIN1, LOW);
   duration = pulseIn(ECHOPIN1, HIGH, TIMEOUT); //added timeout
-  //Serial.print("Time1  ");
-  //Serial.print(duration);
-  distance = duration/58.2;  
-  //Serial.print("   Distance1  ");
-  //Serial.print(distance); 
-  delay(50);
-  //delay(100);
-  //Serial.println("   ");
+  
 }
- /*if(distance==0){
-  return 1000;
- }*/
+distance = duration/58.2;  
 return distance;
 
 }
 
 
 void standardFunctions::turnServo(int degrees){
-  if(degrees>180)
-    degrees=180;
+  if(degrees>172)
+    degrees=172;
   if(degrees<8)
     degrees=8;
   
@@ -137,6 +119,8 @@ int getCountOfSimilarNumbers(int pingValues[],int index){
 int standardFunctions::pingSensor(int pingID){
   int currentReading;
   int attempts=0;
+  int totalReadings=0;
+  int numReadings=0;
   currentReading=soloPingSensor(pingID);
   for(;attempts<READINGS; attempts++){
     if(pingID==1){
@@ -146,21 +130,32 @@ int standardFunctions::pingSensor(int pingID){
       delay(3);
     }
     currentReading=soloPingSensor(pingID);
-    if(currentReading!=0){
-      Serial.print("   pingSensor");
-      Serial.print(pingID);
-      Serial.print(":   ");
-      Serial.print(currentReading);
-      Serial.println();
-      return currentReading;
+    if(currentReading>5&&currentReading<80){
+//      Serial.print("   pingSensor");
+//      Serial.print(pingID);
+//      Serial.print(":   ");
+//      Serial.print(currentReading);
+//      Serial.println();
+      numReadings++;
+      totalReadings+=currentReading;
     }
+    
   }
-  Serial.print("   pingSensor");
-  Serial.print(pingID);
-  Serial.print(":   ");
-  Serial.print(300);
-  Serial.println();
-  return 300;
+  if(totalReadings==0){
+    Serial.print("   pingSensor");
+    Serial.print(pingID);
+    Serial.print(":   ");
+    Serial.print(300);
+    Serial.println();
+    return 300;
+  }else{
+    Serial.print("   pingSensor");
+    Serial.print(pingID);
+    Serial.print(":   ");
+    Serial.print(totalReadings/numReadings);
+    Serial.println();
+    return totalReadings/numReadings;
+  }
   
   /*
   int pingValues[READINGS];
