@@ -6,8 +6,8 @@ static standardFunctions sf;
 //0 go straight
 //1 turn right
 
-#define turnAfterHittingWall 3000 
-#define turnAfterHittingCan 2500
+#define turnLeftAfterHittingCan 3250
+#define turnRightAfterHittingCan 5500
 
 void driveMode::drive(int directionToTurnAfterHitting){
   int canclose=0;
@@ -75,11 +75,16 @@ void driveMode::drive(int directionToTurnAfterHitting){
       canclose=1;
     }
     if(distance0>40 && distance1>40 && canclose==1){
-      Serial.println("cancanasdas");
+        Serial.println("cancanasdas");
+        sf.turn(0);
+        delay(750);
+        sf.turn(directionToTurnAfterHitting);
+        if(1==directionToTurnAfterHitting){
+          delay(turnLeftAfterHittingCan);
+        } else {
+          delay(turnRightAfterHittingCan);
+        }
       canclose=0;
-      sf.turn(directionToTurnAfterHitting*-1);
-      delay(turnAfterHittingCan);
-      
     }
     Serial.println();
    }

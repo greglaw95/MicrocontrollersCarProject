@@ -162,6 +162,6 @@ void startMode::setUp(){
   sf.turn(0);
   sf.turnServo(STRAIGHT);
   sf.drive(0);
-  return lookdir;
+  return lookdir*(-1);
  }
 

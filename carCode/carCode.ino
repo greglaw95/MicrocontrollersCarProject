@@ -11,8 +11,8 @@ void setup() {
   Serial.begin(9600);
   Serial.print("start");
   sf.setupStandardFunctions();
-  sm.start();
-  dm.drive(1);
+  int dir = sm.start();
+  dm.drive(dir);
   
 /*
   sf.turn(1);
