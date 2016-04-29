@@ -39,7 +39,7 @@
   Serial.println("CminI: "); Serial.print(CminI);
 */
   if(lookdir==-1){
-    CminI*=-1;
+    CminI*=-1;//The walls 
   }
   if (CminI >= -10 && CminI <=10){
     //go straight
@@ -81,7 +81,7 @@
     if(pingval>200){
       Serial.print("Changing side");
       //change direction
-      initdist=0;
+      initdist=0;//Looking the other way so will need a new intial distance.
       if(lookdir==1){
         lookdir=-1;
         sf.turnServo(LEFT);
@@ -99,61 +99,21 @@
   sf.drive(1);
   return pingval;
  }
-/*
-void startMode::setUp(){
-  initdist = wallScan(); //check the initial distance before moving
 
-  int notfound = 0
-
-  //make sure that the init dist is actually set
-  while(initdist == 0 ){
-    sf.drive(1);
-    delay(100);
-    sf.drive(0);
-    initdist = wallScan();
-  }
-}
- */
  int startMode::start(){
   int distance;
   int direct;
   initdist=0;
   sf.turn(0);
-  sf.turnServo(RIGHT); //look ping sensor to right
-  lookdir=1;
-  loopRunning=1;
-  delay(1000);
- /*
-=======
-  sf.turnServo(180); //look ping sensor to right
-  delay(100);
->>>>>>> origin/idogarrythings
-  initdist = wallScan(); //check the initial distance before moving
-
-<<<<<<< HEAD
-  //look ping sensor to right
-  sf.turnServo(90);
-
-  //check the initial distance before moving
-  int initdist = wallScan(sf);
-=======
-  //make sure that the init dist is actually set
-  while(initdist == 0){
-    sf.drive(1);
-    delay(100);
-    sf.drive(0);
-    initdist = wallScan();
-  }
-<<<<<<< HEAD
-*/
+  sf.turnServo(RIGHT);
+  lookdir=1;//Currently looking at the wall to the right
+  loopRunning=1;//Start mode is still to continue
+  delay(1000);//Wait for the servo to turn
   wallScan();  
   MsTimer2::set(RUNTIME, endLoop);
   MsTimer2::start();
-  sf.drive(1); //start the car moving for this section
-  
-  //set a for loop and loop for a long time until distance reached
+  sf.drive(1); 
   while(1==loopRunning){
-    //sf.turn(0);
     distance = wallScan();
     checkDirAndTurn(distance);
   }

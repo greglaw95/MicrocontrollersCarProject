@@ -13,47 +13,20 @@ void driveMode::drive(int directionToTurnAfterHitting){
   int canclose=0;
   int wall=0;
   sf.turn(0);
-  /*hit can? change mode?
-  if(distance0<5 && distance1<5){
-    sf.drive(0);
-    sf.turn(0);
-    return;
-  }*/
   sf.turnServo(98);
-  sf.drive(1);
-  
+  sf.drive(1);  
    long diff=0;
    int distance0,distance1=0;
  do{
-
     Serial.println("pinging0");
     distance0=sf.pingSensor(0);
     Serial.println("pinging1");
     distance1=sf.pingSensor(1);
-    /*
-    if(distance0<4 && distance1<4){
-      wall++;
-    }else{
-      wall=0;
-    }
-    if(wall==4){
-      Serial.print("wall");
-      //sf.turn(directionToTurnAfterHitting*-1); //left or right?
-      //delay(turnAfterHittingWall);
-      return;
-    }*/
     diff = abs(distance0-distance1);
-    //Serial.println();
-    /*Serial.print("Dist0  ");
-    Serial.print(distance0);
-    Serial.print("   Dist1   ");
-    Serial.print(distance1);*/
     Serial.println();
     Serial.print("diff  ");
     Serial.print(diff);
     Serial.println();
-    //delay(1000);
-  /*while there isn't a can on our nose*/
     if(diff<10 && diff>=0){
      //both can see therefore go straight
      Serial.print("  straight  ");

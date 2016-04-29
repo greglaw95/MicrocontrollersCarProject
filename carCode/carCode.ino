@@ -2,65 +2,23 @@
 #include "driveMode.h"
 #include "startMode.h"
 #include "standardFunctions.h"
+#include "scanMode.h"
 
 standardFunctions sf;
 driveMode dm;
 startMode sm;
+scanMode s2m;
+int dir;
 
 void setup() {
   Serial.begin(9600);
   Serial.print("start");
   sf.setupStandardFunctions();
-  int dir = sm.start();
-  dm.drive(dir);
-  
-/*
-  sf.turn(1);
-  delay(2000);
-  sf.turn(-1);
-  delay(2000);
-  sf.turn(0);
-*/
-  /*
-  sf.turnServo(0);
-  delay(3000);
-  sf.turnServo(90);
-  delay(3000);
-  sf.turnServo(180);
-  delay(3000);
-  sf.turnServo(90);
-  */
-
-  /*
-  sf.drive(1);
-  delay(1000);
-  sf.turn(-1);
-  delay(300);
-  sf.turn(1);
-  delay(300);
-  sf.turn(-1); //turn back left after right to centre
-  sf.turn(0);
-  delay(100);
-  sf.drive(0);
-  sf.turn(0);
-
-  sf.turnServo(0);
-  delay(750);
-  sf.turnServo(45);
-  delay(750);
-  sf.turnServo(90);
-  delay(750);
-  sf.turnServo(135);
-  delay(750);
-  sf.turnServo(180);
-  
-  sf.pingSensor(0);
-  */
-  //sf.pingSensor(0); 
-  //Serial.print(sf.pingSensor(0));
+  dir = sm.start();
 }
 
 
 void loop() {
-  Serial.print(sf.pingSensor(0));
+  dm.drive(dir);
+  s2m.scan(sf);
 }
